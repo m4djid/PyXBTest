@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from sys import argv
 import os
 import functools as fun
+import json
 #from dicttoxml import dicttoxml
 
 
@@ -152,6 +153,8 @@ def get_directory_structure(rootdir):
         parent[folders[-1]] = subdir
     return dir
 
+#output = open("output.json","w")
+#output.write(json.dumps(get_directory_structure(chemin),sort_keys=True, indent=4,separators=(',',':')))
 
 print("")
 print("==========================Etape 7=============================")
@@ -184,7 +187,7 @@ print("")
 def xml_formateur(element):
     chaine_originale = ET.tostring(element)
     reparsed = DOM.parseString(chaine_originale)
-    return reparsed.toprettyxml(indent=" ")
+    return reparsed.toprettyxml(indent="    ")
 
 
 def xml_maker(cible, chemin, direction):
