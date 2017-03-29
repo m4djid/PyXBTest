@@ -1,5 +1,5 @@
 <vos:transfer xmlns:vos="http://www.ivoa.net/xml/VOSpace/v2.1">
-  <vos:target>vos://example.com!vospace/myresult1</vos:target>
+  <vos:target>vos://example.com!vospace/myresult4</vos:target>
   <vos:direction>pushToVoSpace</vos:direction>
   <vos:view uri="ivo://ivoa.net/vospace/core#fits"/>
   <vos:protocol uri="ivo://ivoa.net/vospace/core#httpput" />
