@@ -265,7 +265,6 @@ def xml_maker(cible, chemin, direction):
 
 
 def getNode(chemin):
-    uri = []
     cheminNode = chemin
     top = ET.Element(prefix + 'node')
     top.set(xmlnsvos, vospace_v)
@@ -273,19 +272,21 @@ def getNode(chemin):
     top.set(uri_v, cheminNode[1:])
     top.set("xs:type", prefix+"ContainerNode")
     properties = ET.SubElement(top, prefix+'properties')
-    for item in propertyGetter(cheminNode):
-        x = item.split("=")
+    for line in propertyGetter(cheminNode):
+        x = line.split("=")
         prop = ET.SubElement(properties, prefix+'property')
         prop.set(uri_v,x[0])
         prop.text = x[1]
 
     acceptViews = ET.SubElement(top,prefix+'accept')
-    accept_ = ET.SubElement(acceptViews, prefix+'view')
-    accept_.set(uri_v,viewGetter(cheminNode)['accept'].split("\n")[0])
+    for line in viewGetter(cheminNode)['accept']:
+        accept_ = ET.SubElement(acceptViews, prefix+'view')
+        accept_.set(uri_v,line)
 
     provideViews = ET.SubElement(top,prefix+'provide')
-    provide_ = ET.SubElement(provideViews, prefix + 'view')
-    provide_.set(uri_v, viewGetter(cheminNode)['provide'].split("\n")[0])
+    for line in viewGetter(cheminNode)['provide']:
+        provide_ = ET.SubElement(provideViews, prefix + 'view')
+        provide_.set(uri_v, line)
 
     capabilities = ET.SubElement(top,prefix+'capabilities')
 
@@ -299,16 +300,25 @@ def getNode(chemin):
 def propertyGetter(chemin):
     path = chemin+'property.txt'
     prop_ = []
-    prop_.append(open(path,'r').readline())
-    retour = prop_
-    return retour
+    p = open(path,'r')
+    for ligne in p:
+        prop_.append(ligne.split("\n")[0])
+    return prop_
 
 def viewGetter(chemin):
     accept = chemin + 'view_accept.txt'
     provide = chemin + 'view_provide.txt'
-    prop_ = {'accept': '', 'provide' : ''}
-    prop_['accept'] = (open(accept, 'r').readline())
-    prop_['provide'] = (open(provide, 'r').readline())
+    prop_ = {'accept': [], 'provide' : []}
+
+    acceptation = open(accept, 'r')
+    for ligne in acceptation:
+        prop_['accept'].append(ligne.split("\n")[0])
+    acceptation.close()
+
+    offerte = open(provide, 'r')
+    for ligne in offerte:
+        prop_['provide'].append(ligne.split("\n")[0])
+    offerte.close()
     retour = prop_
     return retour
 
