@@ -6,6 +6,8 @@ from sys import argv
 import os
 import functools as fun
 import json
+import errno
+import uuid
 #from dicttoxml import dicttoxml
 
 
@@ -135,26 +137,78 @@ print('protocol :',check)
 
 print("")
 print("==========================Etape 6=============================")
-print("FileSystem (utilisation et modification d'un snippet mappant un dossier"
-      " et ajoutant ses elements a un dictionnaire)")
+print("FileSystem (utilisation et modification d'un snippet mappant un dossier)"
+      " Création d'un json simple")
 print("")
 
-def get_directory_structure(rootdir):
-    """
-    Creates a nested dictionary that represents the folder structure of rootdir
-    """
-    dir = {}
-    rootdir = rootdir.rstrip(os.sep)
-    start = rootdir.rfind(os.sep) + 1
-    for path, dirs, files in os.walk(rootdir):
-        folders = path[start:].split(os.sep)
-        subdir = dict.fromkeys(files)
-        parent = fun.reduce(dict.get, folders[:-1], dir)
-        parent[folders[-1]] = subdir
-    return dir
+#def get_directory_structure(rootdir):
+    # """
+    # Creates a nested dictionary that represents the folder structure of rootdir
+    # """
+    # dir_dictionnary = {}
+    # rootdir = rootdir.rstrip(os.sep)
+    # start = rootdir.rfind(os.sep) + 1
+    # for path, dirs, files in os.walk(rootdir):
+    #     folders = path[start:].split(os.sep)
+    #     subdir = dict.fromkeys(files)
+    #     parent = fun.reduce(dict.get, folders[:-1], dir_dictionnary)
+    #     parent[folders[-1]] = subdir
+    #     if os.path.isfile(path):
+    #         dir_dictionnary['size'] = os.walk(rootdir)
+    # return dir_dictionnary
 
-#output = open("output.json","w")
-#output.write(json.dumps(get_directory_structure(chemin),sort_keys=True, indent=4,separators=(',',':')))
+#VoJson = json.dumps(get_directory_structure(chemin),sort_keys=True, indent=2,separators=(',',':'))
+def octet(entier):
+    taille_ = entier
+    retour = ''
+    if taille_ >= 1000 and taille_ < 1000000:
+        retour = str(round(taille_ / 100, 2)) + 'ko'
+    elif taille_ >= 1000000:
+        retour = str(round(taille_ / 1000000, 2)) + 'Mo'
+    elif taille_ < 1000:
+        retour = str(taille_) + 'o'
+    return retour
+
+def get_size_dir(start_path):
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(start_path):
+        for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+
+    return octet(total_size)
+
+
+def path_hierarchy(path):
+    taille = get_size_dir(path)
+    hierarchy = {
+        'type': 'folder',
+        'name': os.path.basename(path),
+        'path': path,
+        'size': taille,
+    }
+
+    try:
+        hierarchy[os.path.basename(path)] = [
+            path_hierarchy(os.path.join(path, contents))
+            for contents in os.listdir(path)
+        ]
+    except OSError as e:
+        if e.errno != errno.ENOTDIR:
+            raise
+        hierarchy['type'] = 'file'
+        hierarchy['size'] = octet(os.path.getsize(path))
+    return hierarchy
+
+def structure_filesystem_to_json():
+    retour = json.dumps(path_hierarchy(chemin), sort_keys=True, indent=2, separators=(',', ':'))
+    return retour
+
+VoJson = structure_filesystem_to_json()
+print(VoJson)
+a = open('VoJson.json','w')
+a.write(VoJson)
+a.close()
 
 print("")
 print("==========================Etape 7=============================")
@@ -213,8 +267,6 @@ def xml_maker(cible, chemin, direction):
 def getNode(chemin):
     uri = []
     cheminNode = chemin
-    for item in liste_fichiers(cheminNode):
-        uri.append(item)
     top = ET.Element(prefix + 'node')
     top.set(xmlnsvos, vospace_v)
     top.set(xmnlsw3c, w3c_uri)
@@ -262,10 +314,24 @@ def viewGetter(chemin):
 
 if prop_direct == 'pushToVoSpace':
     dom = xml_maker(fichier, chemin, prop_direct)
+    print("pushToVoSpace : " + str(uuid.uuid1()))
     print(dom)
+
 elif prop_direct == 'pullFromVoSpace':
     dom = xml_maker(fichier, chemin, prop_direct)
+    print("pullFromVoSpace : " + str(uuid.uuid1()))
     print(dom)
+
 elif prop_direct == '':
     dossier = print_attr(root)['node']['uri']
-    print(getNode(dossier))
+    recupereNode = getNode(dossier)
+    print("getNode : " + str(uuid.uuid1()))
+    print(recupereNode)
+
+print("")
+print("==========================Etape 9=============================")
+print("Travail sur le JSON")
+print("")
+
+VoDict = json.loads(VoJson)
+
