@@ -227,10 +227,14 @@ endpoint = recherche_repertoire(fichier, chemin)
 #print(endpoint)
 
 def liste_fichiers(path):
-    liste = []
-    for dirname, dirnames, files in os.walk(path):
-        for file in files:
-            liste.append(os.path.join(file))
+    liste = {}
+    type = ''
+    for file in os.listdir(path):
+        if "." in file:
+            if file.split(".")[1] != 'tar.gz' or file.split(".")[1] != 'zip)':
+                type = 'DataNode'
+        else: type = 'ContainerNode'
+        liste[os.path.join(file)] = type
     return liste
 
 print("")
@@ -271,6 +275,7 @@ def getNode(chemin):
     top.set(xmnlsw3c, w3c_uri)
     top.set(uri_v, cheminNode[1:])
     top.set("xs:type", prefix+"ContainerNode")
+
     properties = ET.SubElement(top, prefix+'properties')
     for line in propertyGetter(cheminNode):
         x = line.split("=")
@@ -291,34 +296,44 @@ def getNode(chemin):
     capabilities = ET.SubElement(top,prefix+'capabilities')
 
     noeuds = ET.SubElement(top,prefix+'nodes')
-    for item in liste_fichiers(cheminNode):
+    for name, type in liste_fichiers(cheminNode).items():
         noeud = ET.SubElement(noeuds,prefix+'node' )
-        noeud.set(uri_v,cheminNode[1:]+item)
-        noeud.set("xs:type",prefix+"Datanode")
+        noeud.set(uri_v,cheminNode[1:]+name)
+        noeud.set("xs:type", type)
     return xml_formateur(top)
 
 def propertyGetter(chemin):
     path = chemin+'property.txt'
     prop_ = []
-    p = open(path,'r')
-    for ligne in p:
-        prop_.append(ligne.split("\n")[0])
+    try:
+        with open(path,'r') as p:
+            for ligne in p:
+                prop_.append(ligne.split("\n")[0])
+    except Exception:
+        print('%s not found' % path)
     return prop_
 
 def viewGetter(chemin):
     accept = chemin + 'view_accept.txt'
     provide = chemin + 'view_provide.txt'
-    prop_ = {'accept': [], 'provide' : []}
+    prop_ = {
+        'accept': [],
+        'provide' : [],
+    }
+    try:
+        with open(accept, 'r') as acceptation:
+            for ligne in acceptation:
+                prop_['accept'].append(ligne.split("\n")[0])
+    except Exception:
+        print('%s not found' % accept)
 
-    acceptation = open(accept, 'r')
-    for ligne in acceptation:
-        prop_['accept'].append(ligne.split("\n")[0])
-    acceptation.close()
+    try:
+        with open(provide, 'r') as offerte:
+            for ligne in offerte:
+                prop_['provide'].append(ligne.split("\n")[0])
+    except Exception:
+        print('%s not found' % provide)
 
-    offerte = open(provide, 'r')
-    for ligne in offerte:
-        prop_['provide'].append(ligne.split("\n")[0])
-    offerte.close()
     retour = prop_
     return retour
 
@@ -344,4 +359,3 @@ print("Travail sur le JSON")
 print("")
 
 VoDict = json.loads(VoJson)
-
