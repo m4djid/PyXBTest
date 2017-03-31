@@ -205,10 +205,10 @@ def structure_filesystem_to_json():
     return retour
 
 VoJson = structure_filesystem_to_json()
-print(VoJson)
-a = open('VoJson.json','w')
-a.write(VoJson)
-a.close()
+# print(VoJson)
+# a = open('VoJson.json','w')
+# a.write(VoJson)
+# a.close()
 
 print("")
 print("==========================Etape 7=============================")

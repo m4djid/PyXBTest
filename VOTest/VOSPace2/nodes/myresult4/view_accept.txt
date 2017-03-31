@@ -1,2 +1,0 @@
-ivo://ivoa.net/vospace/core#anyview
-

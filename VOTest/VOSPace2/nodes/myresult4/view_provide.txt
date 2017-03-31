@@ -1,2 +1,0 @@
-ivo://ivoa/net/vospace/core#defaultview
-ivo://ivoa/net/vospace/core#fits
