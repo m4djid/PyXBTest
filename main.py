@@ -8,6 +8,7 @@ import functools as fun
 import json
 import errno
 import uuid
+import datetime
 #from dicttoxml import dicttoxml
 
 
@@ -181,11 +182,17 @@ def get_size_dir(start_path):
 
 def path_hierarchy(path):
     taille = get_size_dir(path)
+    tempdate = datetime.datetime.fromtimestamp(os.path.getmtime(path))
+    mdate =  tempdate.strftime("%Y-%m-%d %H:%M:%S")
+    owner = os.stat(path).st_uid
+    fName = os.path.basename(path)
     hierarchy = {
         'type': 'folder',
-        'name': os.path.basename(path),
+        'name': fName,
         'path': path,
         'size': taille,
+        'modified': mdate,
+        'ownerId' : owner,
     }
 
     try:
