@@ -1,300 +1,30 @@
 {
   "VOTest":[
     {
-      "VOSpace2":[
-        {
-          "name":"nodes",
-          "nodes":[
-            {
-              "myresult1":[
-                {
-                  "name":"myresult1.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult1/myresult1.txt",
-                  "size":"10o",
-                  "type":"file"
-                },
-                {
-                  "Property":[
-                    {
-                      "name":"myresult1_property.txt",
-                      "path":"./VOTest/VOSpace2/nodes/myresult1/Property/myresult1_property.txt",
-                      "size":"6o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Property",
-                  "path":"./VOTest/VOSpace2/nodes/myresult1/Property",
-                  "size":"6o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_accept.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult1/view_accept.txt",
-                  "size":"37o",
-                  "type":"file"
-                },
-                {
-                  "Capability":[
-                    {
-                      "name":"myresult1_capability.txt",
-                      "path":"./VOTest/VOSpace2/nodes/myresult1/Capability/myresult1_capability.txt",
-                      "size":"12o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Capability",
-                  "path":"./VOTest/VOSpace2/nodes/myresult1/Capability",
-                  "size":"12o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_provide.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult1/view_provide.txt",
-                  "size":"40o",
-                  "type":"file"
-                },
-                {
-                  "name":"property.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult1/property.txt",
-                  "size":"63o",
-                  "type":"file"
-                }
-              ],
-              "name":"myresult1",
-              "path":"./VOTest/VOSpace2/nodes/myresult1",
-              "size":"168o",
-              "type":"folder"
-            },
-            {
-              "myresult3":[
-                {
-                  "Property":[
-                    {
-                      "name":"myresult3_property.txt",
-                      "path":"./VOTest/VOSpace2/nodes/myresult3/Property/myresult3_property.txt",
-                      "size":"5o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Property",
-                  "path":"./VOTest/VOSpace2/nodes/myresult3/Property",
-                  "size":"5o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_accept.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult3/view_accept.txt",
-                  "size":"37o",
-                  "type":"file"
-                },
-                {
-                  "name":"myresult3.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult3/myresult3.txt",
-                  "size":"10o",
-                  "type":"file"
-                },
-                {
-                  "Capability":[
-                    {
-                      "name":"myresult3_capability.txt",
-                      "path":"./VOTest/VOSpace2/nodes/myresult3/Capability/myresult3_capability.txt",
-                      "size":"12o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Capability",
-                  "path":"./VOTest/VOSpace2/nodes/myresult3/Capability",
-                  "size":"12o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_provide.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult3/view_provide.txt",
-                  "size":"40o",
-                  "type":"file"
-                },
-                {
-                  "name":"property.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult3/property.txt",
-                  "size":"63o",
-                  "type":"file"
-                }
-              ],
-              "name":"myresult3",
-              "path":"./VOTest/VOSpace2/nodes/myresult3",
-              "size":"167o",
-              "type":"folder"
-            },
-            {
-              "myresult4":[
-                {
-                  "Property":[
-                    {
-                      "name":"myresult4_property.txt",
-                      "path":"./VOTest/VOSpace2/nodes/myresult4/Property/myresult4_property.txt",
-                      "size":"6o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Property",
-                  "path":"./VOTest/VOSpace2/nodes/myresult4/Property",
-                  "size":"6o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_accept.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult4/view_accept.txt",
-                  "size":"37o",
-                  "type":"file"
-                },
-                {
-                  "name":"myresult4.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult4/myresult4.txt",
-                  "size":"10o",
-                  "type":"file"
-                },
-                {
-                  "Capability":[
-                    {
-                      "name":"myresult4_capability.txt",
-                      "path":"./VOTest/VOSpace2/nodes/myresult4/Capability/myresult4_capability.txt",
-                      "size":"12o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Capability",
-                  "path":"./VOTest/VOSpace2/nodes/myresult4/Capability",
-                  "size":"12o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_provide.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult4/view_provide.txt",
-                  "size":"73o",
-                  "type":"file"
-                },
-                {
-                  "name":"property.txt",
-                  "path":"./VOTest/VOSpace2/nodes/myresult4/property.txt",
-                  "size":"63o",
-                  "type":"file"
-                }
-              ],
-              "name":"myresult4",
-              "path":"./VOTest/VOSpace2/nodes/myresult4",
-              "size":"201o",
-              "type":"folder"
-            }
-          ],
-          "path":"./VOTest/VOSpace2/nodes",
-          "size":"536o",
-          "type":"folder"
-        },
-        {
-          "name":"protocols",
-          "path":"./VOTest/VOSpace2/protocols",
-          "protocols":[
-            {
-              "name":"httpget.txt",
-              "path":"./VOTest/VOSpace2/protocols/httpget.txt",
-              "size":"4o",
-              "type":"file"
-            }
-          ],
-          "size":"4o",
-          "type":"folder"
-        }
-      ],
-      "name":"VOSpace2",
-      "path":"./VOTest/VOSpace2",
-      "size":"540o",
-      "type":"folder"
+      "name":".DS_Store",
+      "path":"./VOTest/.DS_Store",
+      "size":"61.48ko",
+      "type":"file"
     },
     {
       "VOSpace":[
         {
+          "name":".DS_Store",
+          "path":"./VOTest/VOSpace/.DS_Store",
+          "size":"61.48ko",
+          "type":"file"
+        },
+        {
           "name":"nodes",
           "nodes":[
             {
-              "myresult2":[
-                {
-                  "Property":[
-                    {
-                      "name":"myresult2_property.txt",
-                      "path":"./VOTest/VOSpace/nodes/myresult2/Property/myresult2_property.txt",
-                      "size":"6o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Property",
-                  "path":"./VOTest/VOSpace/nodes/myresult2/Property",
-                  "size":"6o",
-                  "type":"folder"
-                },
-                {
-                  "name":"myresult2.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult2/myresult2.txt",
-                  "size":"10o",
-                  "type":"file"
-                },
-                {
-                  "name":"view_accept.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult2/view_accept.txt",
-                  "size":"37o",
-                  "type":"file"
-                },
-                {
-                  "Capability":[
-                    {
-                      "name":"myresult2_capability.txt",
-                      "path":"./VOTest/VOSpace/nodes/myresult2/Capability/myresult2_capability.txt",
-                      "size":"12o",
-                      "type":"file"
-                    }
-                  ],
-                  "name":"Capability",
-                  "path":"./VOTest/VOSpace/nodes/myresult2/Capability",
-                  "size":"12o",
-                  "type":"folder"
-                },
-                {
-                  "name":"view_provide.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult2/view_provide.txt",
-                  "size":"40o",
-                  "type":"file"
-                },
-                {
-                  "name":"property.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult2/property.txt",
-                  "size":"63o",
-                  "type":"file"
-                }
-              ],
-              "name":"myresult2",
-              "path":"./VOTest/VOSpace/nodes/myresult2",
-              "size":"168o",
-              "type":"folder"
+              "name":".DS_Store",
+              "path":"./VOTest/VOSpace/nodes/.DS_Store",
+              "size":"61.48ko",
+              "type":"file"
             },
             {
               "myresult1":[
-                {
-                  "name":"myresult1.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult1/myresult1.txt",
-                  "size":"10o",
-                  "type":"file"
-                },
-                {
-                  "name":"rows.json",
-                  "path":"./VOTest/VOSpace/nodes/myresult1/rows.json",
-                  "size":"710.94Mo",
-                  "type":"file"
-                },
-                {
-                  "name":"view_accept.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult1/view_accept.txt",
-                  "size":"36o",
-                  "type":"file"
-                },
                 {
                   "Capability":[
                     {
@@ -310,9 +40,9 @@
                   "type":"folder"
                 },
                 {
-                  "name":"view_provide.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult1/view_provide.txt",
-                  "size":"40o",
+                  "name":"myresult1.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult1/myresult1.txt",
+                  "size":"10o",
                   "type":"file"
                 },
                 {
@@ -320,41 +50,87 @@
                   "path":"./VOTest/VOSpace/nodes/myresult1/property.txt",
                   "size":"63o",
                   "type":"file"
+                },
+                {
+                  "name":"view_accept.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult1/view_accept.txt",
+                  "size":"36o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_provide.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult1/view_provide.txt",
+                  "size":"40o",
+                  "type":"file"
                 }
               ],
               "name":"myresult1",
               "path":"./VOTest/VOSpace/nodes/myresult1",
-              "size":"710.94Mo",
+              "size":"161o",
               "type":"folder"
             },
             {
-              "myresult3":[
+              "myresult2":[
+                {
+                  "Capability":[
+                    {
+                      "name":"myresult2_capability.txt",
+                      "path":"./VOTest/VOSpace/nodes/myresult2/Capability/myresult2_capability.txt",
+                      "size":"12o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Capability",
+                  "path":"./VOTest/VOSpace/nodes/myresult2/Capability",
+                  "size":"12o",
+                  "type":"folder"
+                },
+                {
+                  "name":"myresult2.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult2/myresult2.txt",
+                  "size":"10o",
+                  "type":"file"
+                },
                 {
                   "Property":[
                     {
-                      "name":"myresult3_property.txt",
-                      "path":"./VOTest/VOSpace/nodes/myresult3/Property/myresult3_property.txt",
-                      "size":"5o",
+                      "name":"myresult2_property.txt",
+                      "path":"./VOTest/VOSpace/nodes/myresult2/Property/myresult2_property.txt",
+                      "size":"6o",
                       "type":"file"
                     }
                   ],
                   "name":"Property",
-                  "path":"./VOTest/VOSpace/nodes/myresult3/Property",
-                  "size":"5o",
+                  "path":"./VOTest/VOSpace/nodes/myresult2/Property",
+                  "size":"6o",
                   "type":"folder"
                 },
                 {
+                  "name":"property.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult2/property.txt",
+                  "size":"63o",
+                  "type":"file"
+                },
+                {
                   "name":"view_accept.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult3/view_accept.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult2/view_accept.txt",
                   "size":"37o",
                   "type":"file"
                 },
                 {
-                  "name":"myresult3.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult3/myresult3.txt",
-                  "size":"10o",
+                  "name":"view_provide.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult2/view_provide.txt",
+                  "size":"40o",
                   "type":"file"
-                },
+                }
+              ],
+              "name":"myresult2",
+              "path":"./VOTest/VOSpace/nodes/myresult2",
+              "size":"168o",
+              "type":"folder"
+            },
+            {
+              "myresult3":[
                 {
                   "Capability":[
                     {
@@ -370,15 +146,41 @@
                   "type":"folder"
                 },
                 {
-                  "name":"view_provide.txt",
-                  "path":"./VOTest/VOSpace/nodes/myresult3/view_provide.txt",
-                  "size":"40o",
+                  "name":"myresult3.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult3/myresult3.txt",
+                  "size":"10o",
                   "type":"file"
+                },
+                {
+                  "Property":[
+                    {
+                      "name":"myresult3_property.txt",
+                      "path":"./VOTest/VOSpace/nodes/myresult3/Property/myresult3_property.txt",
+                      "size":"5o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Property",
+                  "path":"./VOTest/VOSpace/nodes/myresult3/Property",
+                  "size":"5o",
+                  "type":"folder"
                 },
                 {
                   "name":"property.txt",
                   "path":"./VOTest/VOSpace/nodes/myresult3/property.txt",
                   "size":"63o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_accept.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult3/view_accept.txt",
+                  "size":"37o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_provide.txt",
+                  "path":"./VOTest/VOSpace/nodes/myresult3/view_provide.txt",
+                  "size":"40o",
                   "type":"file"
                 }
               ],
@@ -389,32 +191,226 @@
             }
           ],
           "path":"./VOTest/VOSpace/nodes",
-          "size":"710.94Mo",
-          "type":"folder"
-        },
-        {
-          "name":"protocols",
-          "path":"./VOTest/VOSpace/protocols",
-          "protocols":[
-            {
-              "name":"httpget.txt",
-              "path":"./VOTest/VOSpace/protocols/httpget.txt",
-              "size":"4o",
-              "type":"file"
-            }
-          ],
-          "size":"4o",
+          "size":"66.44ko",
           "type":"folder"
         }
       ],
       "name":"VOSpace",
       "path":"./VOTest/VOSpace",
-      "size":"710.94Mo",
+      "size":"127.92ko",
+      "type":"folder"
+    },
+    {
+      "VOSPace2":[
+        {
+          "name":".DS_Store",
+          "path":"./VOTest/VOSPace2/.DS_Store",
+          "size":"61.48ko",
+          "type":"file"
+        },
+        {
+          "name":"nodes",
+          "nodes":[
+            {
+              "name":".DS_Store",
+              "path":"./VOTest/VOSPace2/nodes/.DS_Store",
+              "size":"61.48ko",
+              "type":"file"
+            },
+            {
+              "myresult1":[
+                {
+                  "Capability":[
+                    {
+                      "name":"myresult1_capability.txt",
+                      "path":"./VOTest/VOSPace2/nodes/myresult1/Capability/myresult1_capability.txt",
+                      "size":"12o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Capability",
+                  "path":"./VOTest/VOSPace2/nodes/myresult1/Capability",
+                  "size":"12o",
+                  "type":"folder"
+                },
+                {
+                  "name":"myresult1.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult1/myresult1.txt",
+                  "size":"10o",
+                  "type":"file"
+                },
+                {
+                  "Property":[
+                    {
+                      "name":"myresult1_property.txt",
+                      "path":"./VOTest/VOSPace2/nodes/myresult1/Property/myresult1_property.txt",
+                      "size":"6o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Property",
+                  "path":"./VOTest/VOSPace2/nodes/myresult1/Property",
+                  "size":"6o",
+                  "type":"folder"
+                },
+                {
+                  "name":"property.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult1/property.txt",
+                  "size":"63o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_accept.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult1/view_accept.txt",
+                  "size":"37o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_provide.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult1/view_provide.txt",
+                  "size":"40o",
+                  "type":"file"
+                }
+              ],
+              "name":"myresult1",
+              "path":"./VOTest/VOSPace2/nodes/myresult1",
+              "size":"168o",
+              "type":"folder"
+            },
+            {
+              "myresult3":[
+                {
+                  "Capability":[
+                    {
+                      "name":"myresult3_capability.txt",
+                      "path":"./VOTest/VOSPace2/nodes/myresult3/Capability/myresult3_capability.txt",
+                      "size":"12o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Capability",
+                  "path":"./VOTest/VOSPace2/nodes/myresult3/Capability",
+                  "size":"12o",
+                  "type":"folder"
+                },
+                {
+                  "name":"myresult3.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult3/myresult3.txt",
+                  "size":"10o",
+                  "type":"file"
+                },
+                {
+                  "Property":[
+                    {
+                      "name":"myresult3_property.txt",
+                      "path":"./VOTest/VOSPace2/nodes/myresult3/Property/myresult3_property.txt",
+                      "size":"5o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Property",
+                  "path":"./VOTest/VOSPace2/nodes/myresult3/Property",
+                  "size":"5o",
+                  "type":"folder"
+                },
+                {
+                  "name":"property.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult3/property.txt",
+                  "size":"63o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_accept.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult3/view_accept.txt",
+                  "size":"37o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_provide.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult3/view_provide.txt",
+                  "size":"40o",
+                  "type":"file"
+                }
+              ],
+              "name":"myresult3",
+              "path":"./VOTest/VOSPace2/nodes/myresult3",
+              "size":"167o",
+              "type":"folder"
+            },
+            {
+              "myresult4":[
+                {
+                  "Capability":[
+                    {
+                      "name":"myresult4_capability.txt",
+                      "path":"./VOTest/VOSPace2/nodes/myresult4/Capability/myresult4_capability.txt",
+                      "size":"12o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Capability",
+                  "path":"./VOTest/VOSPace2/nodes/myresult4/Capability",
+                  "size":"12o",
+                  "type":"folder"
+                },
+                {
+                  "name":"myresult4.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult4/myresult4.txt",
+                  "size":"10o",
+                  "type":"file"
+                },
+                {
+                  "Property":[
+                    {
+                      "name":"myresult4_property.txt",
+                      "path":"./VOTest/VOSPace2/nodes/myresult4/Property/myresult4_property.txt",
+                      "size":"6o",
+                      "type":"file"
+                    }
+                  ],
+                  "name":"Property",
+                  "path":"./VOTest/VOSPace2/nodes/myresult4/Property",
+                  "size":"6o",
+                  "type":"folder"
+                },
+                {
+                  "name":"property.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult4/property.txt",
+                  "size":"63o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_accept.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult4/view_accept.txt",
+                  "size":"35o",
+                  "type":"file"
+                },
+                {
+                  "name":"view_provide.txt",
+                  "path":"./VOTest/VOSPace2/nodes/myresult4/view_provide.txt",
+                  "size":"72o",
+                  "type":"file"
+                }
+              ],
+              "name":"myresult4",
+              "path":"./VOTest/VOSPace2/nodes/myresult4",
+              "size":"198o",
+              "type":"folder"
+            }
+          ],
+          "path":"./VOTest/VOSPace2/nodes",
+          "size":"66.81ko",
+          "type":"folder"
+        }
+      ],
+      "name":"VOSPace2",
+      "path":"./VOTest/VOSPace2",
+      "size":"128.29ko",
       "type":"folder"
     }
   ],
   "name":"VOTest",
   "path":"./VOTest",
-  "size":"710.94Mo",
+  "size":"317.69ko",
   "type":"folder"
 }

@@ -205,7 +205,7 @@ def structure_filesystem_to_json():
     return retour
 
 VoJson = structure_filesystem_to_json()
-# print(VoJson)
+print(VoJson)
 # a = open('VoJson.json','w')
 # a.write(VoJson)
 # a.close()
@@ -230,8 +230,7 @@ def liste_fichiers(path):
     liste = {}
     type = ''
     for file in os.listdir(path):
-        if "." in file:
-            if file.split(".")[1] != 'tar.gz' or file.split(".")[1] != 'zip)':
+        if "." in file and (file.split('.')[1] != 'zip' and file.split('.')[1] != 'tar'):
                 type = 'DataNode'
         else: type = 'ContainerNode'
         liste[os.path.join(file)] = type
@@ -355,7 +354,6 @@ elif prop_direct == '':
 
 print("")
 print("==========================Etape 9=============================")
-print("Travail sur le JSON")
+print("A faire : Travail sur le JSON")
 print("")
 
-VoDict = json.loads(VoJson)
