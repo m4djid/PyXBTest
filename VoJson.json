@@ -12,7 +12,7 @@
                 {
                   "modified":"2017-02-13 09:16:09",
                   "name":"myresult1.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult1/myresult1.txt",
                   "size":"10o",
                   "type":"file"
@@ -22,7 +22,7 @@
                     {
                       "modified":"2017-02-13 09:16:37",
                       "name":"myresult1_property.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace2/nodes/myresult1/Property/myresult1_property.txt",
                       "size":"6o",
                       "type":"file"
@@ -30,7 +30,7 @@
                   ],
                   "modified":"2017-03-02 10:11:29",
                   "name":"Property",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult1/Property",
                   "size":"6o",
                   "type":"folder"
@@ -38,7 +38,7 @@
                 {
                   "modified":"2017-03-27 11:48:25",
                   "name":"view_accept.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult1/view_accept.txt",
                   "size":"37o",
                   "type":"file"
@@ -48,7 +48,7 @@
                     {
                       "modified":"2017-02-13 09:18:33",
                       "name":"myresult1_capability.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace2/nodes/myresult1/Capability/myresult1_capability.txt",
                       "size":"12o",
                       "type":"file"
@@ -56,7 +56,7 @@
                   ],
                   "modified":"2017-03-02 10:11:27",
                   "name":"Capability",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult1/Capability",
                   "size":"12o",
                   "type":"folder"
@@ -64,7 +64,7 @@
                 {
                   "modified":"2017-03-27 11:48:28",
                   "name":"view_provide.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult1/view_provide.txt",
                   "size":"40o",
                   "type":"file"
@@ -72,14 +72,14 @@
                 {
                   "modified":"2017-03-27 14:56:42",
                   "name":"property.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult1/property.txt",
                   "size":"63o",
                   "type":"file"
                 }
               ],
               "name":"myresult1",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace2/nodes/myresult1",
               "size":"168o",
               "type":"folder"
@@ -92,7 +92,7 @@
                     {
                       "modified":"2017-03-02 10:10:02",
                       "name":"myresult3_property.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace2/nodes/myresult3/Property/myresult3_property.txt",
                       "size":"5o",
                       "type":"file"
@@ -100,7 +100,7 @@
                   ],
                   "modified":"2017-03-02 10:11:41",
                   "name":"Property",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult3/Property",
                   "size":"5o",
                   "type":"folder"
@@ -108,7 +108,7 @@
                 {
                   "modified":"2017-03-27 11:48:25",
                   "name":"view_accept.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult3/view_accept.txt",
                   "size":"37o",
                   "type":"file"
@@ -116,7 +116,7 @@
                 {
                   "modified":"2017-03-02 10:09:40",
                   "name":"myresult3.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult3/myresult3.txt",
                   "size":"10o",
                   "type":"file"
@@ -126,7 +126,7 @@
                     {
                       "modified":"2017-03-02 10:09:49",
                       "name":"myresult3_capability.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace2/nodes/myresult3/Capability/myresult3_capability.txt",
                       "size":"12o",
                       "type":"file"
@@ -134,7 +134,7 @@
                   ],
                   "modified":"2017-03-02 10:11:38",
                   "name":"Capability",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult3/Capability",
                   "size":"12o",
                   "type":"folder"
@@ -142,7 +142,7 @@
                 {
                   "modified":"2017-03-27 11:48:28",
                   "name":"view_provide.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult3/view_provide.txt",
                   "size":"40o",
                   "type":"file"
@@ -150,14 +150,14 @@
                 {
                   "modified":"2017-03-27 14:56:42",
                   "name":"property.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult3/property.txt",
                   "size":"63o",
                   "type":"file"
                 }
               ],
               "name":"myresult3",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace2/nodes/myresult3",
               "size":"167o",
               "type":"folder"
@@ -170,7 +170,7 @@
                     {
                       "modified":"2017-03-02 10:09:29",
                       "name":"myresult4_property.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace2/nodes/myresult4/Property/myresult4_property.txt",
                       "size":"6o",
                       "type":"file"
@@ -178,7 +178,7 @@
                   ],
                   "modified":"2017-03-02 13:39:52",
                   "name":"Property",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult4/Property",
                   "size":"6o",
                   "type":"folder"
@@ -186,7 +186,7 @@
                 {
                   "modified":"2017-03-27 11:49:07",
                   "name":"view_accept.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult4/view_accept.txt",
                   "size":"37o",
                   "type":"file"
@@ -194,7 +194,7 @@
                 {
                   "modified":"2017-02-13 09:18:07",
                   "name":"myresult4.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult4/myresult4.txt",
                   "size":"10o",
                   "type":"file"
@@ -204,7 +204,7 @@
                     {
                       "modified":"2017-03-02 10:09:20",
                       "name":"myresult4_capability.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace2/nodes/myresult4/Capability/myresult4_capability.txt",
                       "size":"12o",
                       "type":"file"
@@ -212,7 +212,7 @@
                   ],
                   "modified":"2017-03-02 13:39:45",
                   "name":"Capability",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult4/Capability",
                   "size":"12o",
                   "type":"folder"
@@ -220,7 +220,7 @@
                 {
                   "modified":"2017-03-27 11:49:02",
                   "name":"view_provide.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult4/view_provide.txt",
                   "size":"73o",
                   "type":"file"
@@ -228,20 +228,20 @@
                 {
                   "modified":"2017-03-27 14:56:42",
                   "name":"property.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace2/nodes/myresult4/property.txt",
                   "size":"63o",
                   "type":"file"
                 }
               ],
               "name":"myresult4",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace2/nodes/myresult4",
               "size":"201o",
               "type":"folder"
             }
           ],
-          "ownerId":1004,
+          "ownerId":"1004",
           "path":"./VOTest/VOSpace2/nodes",
           "size":"536o",
           "type":"folder"
@@ -249,13 +249,13 @@
         {
           "modified":"2017-03-29 14:32:17",
           "name":"protocols",
-          "ownerId":1004,
+          "ownerId":"1004",
           "path":"./VOTest/VOSpace2/protocols",
           "protocols":[
             {
               "modified":"2017-03-29 14:32:17",
               "name":"httpget.txt",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace2/protocols/httpget.txt",
               "size":"4o",
               "type":"file"
@@ -267,7 +267,7 @@
       ],
       "modified":"2017-03-27 10:24:35",
       "name":"VOSpace2",
-      "ownerId":1004,
+      "ownerId":"1004",
       "path":"./VOTest/VOSpace2",
       "size":"540o",
       "type":"folder"
@@ -286,7 +286,7 @@
                     {
                       "modified":"2017-03-02 10:09:29",
                       "name":"myresult2_property.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace/nodes/myresult2/Property/myresult2_property.txt",
                       "size":"6o",
                       "type":"file"
@@ -294,7 +294,7 @@
                   ],
                   "modified":"2017-03-02 10:11:34",
                   "name":"Property",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult2/Property",
                   "size":"6o",
                   "type":"folder"
@@ -302,7 +302,7 @@
                 {
                   "modified":"2017-02-13 09:18:07",
                   "name":"myresult2.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult2/myresult2.txt",
                   "size":"10o",
                   "type":"file"
@@ -310,7 +310,7 @@
                 {
                   "modified":"2017-03-27 11:48:25",
                   "name":"view_accept.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult2/view_accept.txt",
                   "size":"37o",
                   "type":"file"
@@ -320,7 +320,7 @@
                     {
                       "modified":"2017-03-02 10:09:20",
                       "name":"myresult2_capability.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace/nodes/myresult2/Capability/myresult2_capability.txt",
                       "size":"12o",
                       "type":"file"
@@ -328,7 +328,7 @@
                   ],
                   "modified":"2017-03-02 10:11:32",
                   "name":"Capability",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult2/Capability",
                   "size":"12o",
                   "type":"folder"
@@ -336,7 +336,7 @@
                 {
                   "modified":"2017-03-27 11:48:28",
                   "name":"view_provide.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult2/view_provide.txt",
                   "size":"40o",
                   "type":"file"
@@ -344,14 +344,14 @@
                 {
                   "modified":"2017-03-27 14:56:42",
                   "name":"property.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult2/property.txt",
                   "size":"63o",
                   "type":"file"
                 }
               ],
               "name":"myresult2",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace/nodes/myresult2",
               "size":"168o",
               "type":"folder"
@@ -362,7 +362,7 @@
                 {
                   "modified":"2017-02-13 09:16:09",
                   "name":"myresult1.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult1/myresult1.txt",
                   "size":"10o",
                   "type":"file"
@@ -370,7 +370,7 @@
                 {
                   "modified":"2017-03-29 10:48:49",
                   "name":"rows.json",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult1/rows.json",
                   "size":"710.94Mo",
                   "type":"file"
@@ -378,7 +378,7 @@
                 {
                   "modified":"2017-03-27 13:31:22",
                   "name":"view_accept.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult1/view_accept.txt",
                   "size":"36o",
                   "type":"file"
@@ -388,7 +388,7 @@
                     {
                       "modified":"2017-02-13 09:18:33",
                       "name":"myresult1_capability.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace/nodes/myresult1/Capability/myresult1_capability.txt",
                       "size":"12o",
                       "type":"file"
@@ -396,7 +396,7 @@
                   ],
                   "modified":"2017-03-02 10:11:27",
                   "name":"Capability",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult1/Capability",
                   "size":"12o",
                   "type":"folder"
@@ -404,7 +404,7 @@
                 {
                   "modified":"2017-03-27 13:31:29",
                   "name":"view_provide.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult1/view_provide.txt",
                   "size":"40o",
                   "type":"file"
@@ -412,14 +412,14 @@
                 {
                   "modified":"2017-03-27 14:56:42",
                   "name":"property.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult1/property.txt",
                   "size":"63o",
                   "type":"file"
                 }
               ],
               "name":"myresult1",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace/nodes/myresult1",
               "size":"710.94Mo",
               "type":"folder"
@@ -432,7 +432,7 @@
                     {
                       "modified":"2017-03-02 10:10:02",
                       "name":"myresult3_property.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace/nodes/myresult3/Property/myresult3_property.txt",
                       "size":"5o",
                       "type":"file"
@@ -440,7 +440,7 @@
                   ],
                   "modified":"2017-03-02 10:11:41",
                   "name":"Property",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult3/Property",
                   "size":"5o",
                   "type":"folder"
@@ -448,7 +448,7 @@
                 {
                   "modified":"2017-03-27 11:48:25",
                   "name":"view_accept.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult3/view_accept.txt",
                   "size":"37o",
                   "type":"file"
@@ -456,7 +456,7 @@
                 {
                   "modified":"2017-03-02 10:09:40",
                   "name":"myresult3.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult3/myresult3.txt",
                   "size":"10o",
                   "type":"file"
@@ -466,7 +466,7 @@
                     {
                       "modified":"2017-03-02 10:09:49",
                       "name":"myresult3_capability.txt",
-                      "ownerId":1004,
+                      "ownerId":"1004",
                       "path":"./VOTest/VOSpace/nodes/myresult3/Capability/myresult3_capability.txt",
                       "size":"12o",
                       "type":"file"
@@ -474,7 +474,7 @@
                   ],
                   "modified":"2017-03-02 10:11:38",
                   "name":"Capability",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult3/Capability",
                   "size":"12o",
                   "type":"folder"
@@ -482,7 +482,7 @@
                 {
                   "modified":"2017-03-27 11:48:28",
                   "name":"view_provide.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult3/view_provide.txt",
                   "size":"40o",
                   "type":"file"
@@ -490,20 +490,20 @@
                 {
                   "modified":"2017-03-27 14:56:42",
                   "name":"property.txt",
-                  "ownerId":1004,
+                  "ownerId":"1004",
                   "path":"./VOTest/VOSpace/nodes/myresult3/property.txt",
                   "size":"63o",
                   "type":"file"
                 }
               ],
               "name":"myresult3",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace/nodes/myresult3",
               "size":"167o",
               "type":"folder"
             }
           ],
-          "ownerId":1004,
+          "ownerId":"1004",
           "path":"./VOTest/VOSpace/nodes",
           "size":"710.94Mo",
           "type":"folder"
@@ -511,13 +511,13 @@
         {
           "modified":"2017-03-29 14:32:26",
           "name":"protocols",
-          "ownerId":1004,
+          "ownerId":"1004",
           "path":"./VOTest/VOSpace/protocols",
           "protocols":[
             {
               "modified":"2017-03-29 14:32:26",
               "name":"httpget.txt",
-              "ownerId":1004,
+              "ownerId":"1004",
               "path":"./VOTest/VOSpace/protocols/httpget.txt",
               "size":"4o",
               "type":"file"
@@ -529,7 +529,7 @@
       ],
       "modified":"2017-03-27 10:24:30",
       "name":"VOSpace",
-      "ownerId":1004,
+      "ownerId":"1004",
       "path":"./VOTest/VOSpace",
       "size":"710.94Mo",
       "type":"folder"
@@ -537,7 +537,7 @@
   ],
   "modified":"2017-03-30 09:43:10",
   "name":"VOTest",
-  "ownerId":1004,
+  "ownerId":"1004",
   "path":"./VOTest",
   "size":"710.94Mo",
   "type":"folder"
