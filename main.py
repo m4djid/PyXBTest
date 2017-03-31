@@ -184,7 +184,7 @@ def path_hierarchy(path):
     taille = get_size_dir(path)
     tempdate = datetime.datetime.fromtimestamp(os.path.getmtime(path))
     mdate =  tempdate.strftime("%Y-%m-%d %H:%M:%S")
-    owner = os.stat(path).st_uid
+    owner = str(os.stat(path).st_uid)
     fName = os.path.basename(path)
     hierarchy = {
         'type': 'folder',
