@@ -10,6 +10,8 @@ import errno
 import uuid
 import datetime
 #from dicttoxml import dicttoxml
+import time
+start_time = time.time()
 
 
 
@@ -110,8 +112,8 @@ def protocol_parser(root):
         y = childs.attrib
         z = childs.text
         print(x[38:],y, z)
-        if len(childs.attrib) > 0:
-            tableau.append(childs.attrib)
+        tableau.append(childs.attrib) if len(childs.attrib) > 0 else None
+
             # print("ajout d'un attribut non vide")
             # print(" ")
     # print("Impression du tableau des attributs")
@@ -154,8 +156,8 @@ def recherche_repertoire(cible, path):
     liste = []
     for dirname, dirnames, files in os.walk(path):
         for subdirname in dirnames:
-            if subdirname == cible[26:]:
-                liste.append(os.path.join(dirname,subdirname))
+            liste.append(os.path.join(dirname, subdirname)) if subdirname == os.path.basename(cible) else None
+
     return liste
 
 endpoint = recherche_repertoire(url_fichier, racine)
@@ -211,7 +213,6 @@ def get_size_dir(start_path):
         for f in filenames:
                 fp = os.path.join(dirpath, f)
                 total_size += os.path.getsize(fp)
-
     return octet(total_size)
 
 
@@ -244,12 +245,7 @@ def path_hierarchy(path):
 
 
 def endpoint_filesystem_to_json():
-    if endpoint:
-        retour = json.dumps(path_hierarchy(endpoint[0]), sort_keys=True, indent=2, separators=(',', ':'))
-        return retour
-    else:
-        return
-
+    return json.dumps(path_hierarchy(endpoint[0]), sort_keys=True, indent=2, separators=(',', ':')) if endpoint else None
 
 
 EndpointJson = endpoint_filesystem_to_json()
@@ -380,3 +376,4 @@ print("==========================Etape 9=============================")
 print("A faire : Travail sur le JSON")
 print("")
 
+print("--- %s seconds ---" % (time.time() - start_time))
