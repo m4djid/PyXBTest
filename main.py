@@ -17,20 +17,22 @@ import datetime
 script, file = argv
 
 prefix = 'vos:'
-sufix = ":vos"
+suffix = ":vos"
 tran = prefix+'transfer'
 targ = prefix+'target'
 direct = prefix+'direction'
 prot = prefix+'protocol'
 endp = prefix+'endpoint'
-xmlnsvos = 'xmlns'+sufix
+xmlnsvos = 'xmlns'+suffix
 xmnlsw3c = 'xmlns:xs'
 w3c_uri = "http://www.w3.org/2001/XMLSchema-instance"
 vospace_v = "http://www.ivoa.net/xml/VOSpace/v2.1"
 uri_v = "uri"
-prop_direct = ''
-fichier =''
-chemin = "./VOTest"
+attribut_direction = ''
+vu = ''
+attribut_security = ''
+url_fichier = ''
+racine = "./VOTest"
 
 
 #doc = VOSpace.CreateFromDocument(open(file).read())
@@ -55,17 +57,18 @@ def text(node, string, idx):
     index = idx - 1
     if string == "target":
         print(string, "==>",node[index].text)
-        global fichier
-        fichier= node[index].text
-        return fichier
+        global url_fichier
+        url_fichier = node[index].text
     elif string == "direction":
         print(string, "==>", node[index].text)
-        global prop_direct
-        prop_direct = node[index].text
-        return prop_direct
+        global attribut_direction
+        attribut_direction = node[index].text
+    elif string == "view":
+        print(string, "==>", node[index].attrib)
+        global vu
+        vu = node[index].attrib
     else:
         print(string)
-
 
 def print_tag(root):
     for idx, childs in enumerate(root.iter()):
@@ -73,25 +76,27 @@ def print_tag(root):
 
 
 print_tag(root)
-
+print(attribut_security)
 
 print("")
 print("==========================Etape 3=============================")
 print("Impression des tags et attributs")
 print("")
 
-def print_attr(root):
+def attr(root):
     retour = {}
     for childs in root.iter():
-        if len(childs.attrib) > 0:
+        if len(childs.attrib) != 0 and len(childs.tag) != 0:
             tag = childs.tag[38:]
             att = childs.attrib
-    retour = {tag: att}
-    #print(str(tag) + " " + str(att))
-    return retour
+            retour = {tag: att}
+            # print(str(tag) + " " + str(att))
+            return retour
 
 
-print(print_attr(root))
+
+
+print(attr(root))
 
 
 print("")
@@ -101,12 +106,16 @@ print("")
 def protocol_parser(root):
     tableau = []
     for childs in root.iter():
+        x = childs.tag
+        y = childs.attrib
+        z = childs.text
+        print(x[38:],y, z)
         if len(childs.attrib) > 0:
             tableau.append(childs.attrib)
             # print("ajout d'un attribut non vide")
             # print(" ")
     # print("Impression du tableau des attributs")
-    # print(tableau)
+    print(tableau)
     return tableau
 retour = protocol_parser(root)
 
@@ -138,6 +147,32 @@ print('protocol :',check)
 
 print("")
 print("==========================Etape 6=============================")
+print("Chercher un dossier dans le FileSystem et en donner le path")
+print("")
+
+def recherche_repertoire(cible, path):
+    liste = []
+    for dirname, dirnames, files in os.walk(path):
+        for subdirname in dirnames:
+            if subdirname == cible[26:]:
+                liste.append(os.path.join(dirname,subdirname))
+    return liste
+
+endpoint = recherche_repertoire(url_fichier, racine)
+print(endpoint)
+
+def liste_fichiers(path):
+    liste = {}
+    type = ''
+    for file in os.listdir(path):
+        if "." in file and (file.split('.')[1] != 'zip' and file.split('.')[1] != 'tar'):
+                type = 'DataNode'
+        else: type = 'ContainerNode'
+        liste[os.path.join(file)] = type
+    return liste
+
+print("")
+print("==========================Etape 7=============================")
 print("FileSystem (utilisation et modification d'un snippet mappant un dossier)"
       " Création d'un json simple")
 print("")
@@ -158,7 +193,7 @@ print("")
     #         dir_dictionnary['size'] = os.walk(rootdir)
     # return dir_dictionnary
 
-#VoJson = json.dumps(get_directory_structure(chemin),sort_keys=True, indent=2,separators=(',',':'))
+#VoJson = json.dumps(get_directory_structure(racine),sort_keys=True, indent=2,separators=(',',':'))
 def octet(entier):
     taille_ = entier
     retour = ''
@@ -207,41 +242,23 @@ def path_hierarchy(path):
         hierarchy['size'] = octet(os.path.getsize(path))
     return hierarchy
 
-def structure_filesystem_to_json():
-    retour = json.dumps(path_hierarchy(chemin), sort_keys=True, indent=2, separators=(',', ':'))
-    return retour
 
-VoJson = structure_filesystem_to_json()
-print(VoJson)
+def endpoint_filesystem_to_json():
+    if endpoint:
+        retour = json.dumps(path_hierarchy(endpoint[0]), sort_keys=True, indent=2, separators=(',', ':'))
+        return retour
+    else:
+        return
+
+
+
+EndpointJson = endpoint_filesystem_to_json()
+print(EndpointJson)
+
 # a = open('VoJson.json','w')
 # a.write(VoJson)
 # a.close()
 
-print("")
-print("==========================Etape 7=============================")
-print("Chercher un dossier dans le FileSystem et en donner le path")
-print("")
-
-def recherche_repertoire(cible, path):
-    liste = []
-    for dirname, dirnames, files in os.walk(path):
-        for subdirname in dirnames:
-            if subdirname == cible[26:]:
-                liste.append(os.path.join(dirname,subdirname))
-    return liste
-
-endpoint = recherche_repertoire(fichier, chemin)
-#print(endpoint)
-
-def liste_fichiers(path):
-    liste = {}
-    type = ''
-    for file in os.listdir(path):
-        if "." in file and (file.split('.')[1] != 'zip' and file.split('.')[1] != 'tar'):
-                type = 'DataNode'
-        else: type = 'ContainerNode'
-        liste[os.path.join(file)] = type
-    return liste
 
 print("")
 print("==========================Etape 8=============================")
@@ -254,9 +271,9 @@ def xml_formateur(element):
     return reparsed.toprettyxml(indent="    ")
 
 
-def xml_maker(cible, chemin, direction):
+def xml_maker(cible, path, direction):
         _cible = cible
-        _chemin = chemin
+        _chemin = path
         _direction = direction
         top = ET.Element(tran)
         top.set(xmlnsvos,vospace_v)
@@ -266,16 +283,16 @@ def xml_maker(cible, chemin, direction):
         sens.text = _direction
 
         pointfinal = recherche_repertoire(_cible, _chemin)
-        for path in pointfinal:
+        for acces in pointfinal:
             proto = ET.SubElement(top, prot)
             proto.set(uri_v, check)
             endpoint = ET.SubElement(proto, endp)
-            endpoint.text = path[1:]
+            endpoint.text = acces[1:]
         return xml_formateur(top)
 
 
-def getNode(chemin):
-    cheminNode = chemin
+def getNode(path):
+    cheminNode = path
     top = ET.Element(prefix + 'node')
     top.set(xmlnsvos, vospace_v)
     top.set(xmnlsw3c, w3c_uri)
@@ -308,20 +325,20 @@ def getNode(chemin):
         noeud.set("xs:type", type)
     return xml_formateur(top)
 
-def propertyGetter(chemin):
-    path = chemin+'property.txt'
+def propertyGetter(path):
+    chemin = path+'property.txt'
     prop_ = []
     try:
-        with open(path,'r') as p:
+        with open(chemin,'r') as p:
             for ligne in p:
                 prop_.append(ligne.split("\n")[0])
     except Exception:
-        print('%s not found' % path)
+        print('%s not found' % chemin)
     return prop_
 
-def viewGetter(chemin):
-    accept = chemin + 'view_accept.txt'
-    provide = chemin + 'view_provide.txt'
+def viewGetter(path):
+    accept = path + 'view_accept.txt'
+    provide = path + 'view_provide.txt'
     prop_ = {
         'accept': [],
         'provide' : [],
@@ -343,18 +360,17 @@ def viewGetter(chemin):
     retour = prop_
     return retour
 
-if prop_direct == 'pushToVoSpace':
-    dom = xml_maker(fichier, chemin, prop_direct)
-    print("pushToVoSpace : " + str(uuid.uuid1()))
+
+directionList = ['pullFromVoSpace','pullToVoSpace', 'pushFromVoSpace', 'pushToVoSpace']
+
+if attribut_direction in directionList:
+    dom = xml_maker(url_fichier, racine, attribut_direction)
+    print(attribut_direction + " : " + str(uuid.uuid1()))
     print(dom)
 
-elif prop_direct == 'pullFromVoSpace':
-    dom = xml_maker(fichier, chemin, prop_direct)
-    print("pullFromVoSpace : " + str(uuid.uuid1()))
-    print(dom)
 
-elif prop_direct == '':
-    dossier = print_attr(root)['node']['uri']
+elif attribut_direction == '':
+    dossier = attr(root)['node']['uri']
     recupereNode = getNode(dossier)
     print("getNode : " + str(uuid.uuid1()))
     print(recupereNode)
