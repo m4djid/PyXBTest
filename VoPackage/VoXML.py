@@ -7,6 +7,7 @@ import os
 import json
 import errno
 
+
 class Voxml(object):
     def __init__(self):
         self.prefix = 'vos:'
@@ -77,7 +78,7 @@ class Voxml(object):
         return reparsed.toprettyxml(indent="    ")
 
     def xml_generator(self, action, path, *args):
-        target, direction, location = args
+        target, direction, location, keepBytes = args
         return
 
 class main(object):
