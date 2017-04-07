@@ -5,21 +5,7 @@ import time
 import datetime
 import errno
 import pprint
-# with open('VoJson.json', 'r') as j:
-#     jdic = json.load(j)
-#
-# print(isinstance(jdic, dict))
 
-
-# c = mongo.MongoClient('localhost', 27017)
-# db = c['vospace']
-# coll = db['arbre']
-# for x in jdic:
-#     for index, item in enumerate(x):
-#             if coll.insert_one(item[index]):
-#                print("OK")
-#             else:
-#                print("Failed")
 
 
 def metaDB(path):
@@ -29,8 +15,8 @@ def metaDB(path):
     prop_ = {
         'node' :  os.path.basename(path),
         'path' : path[1:],
-        'accept': [],
-        'provide' : [],
+        'accepts': [],
+        'provides' : [],
         'properties': [],
     }
     print("start : " + path)
@@ -39,7 +25,7 @@ def metaDB(path):
             for ligne in acceptation:
                 if ligne == "":
                     break
-                prop_['accept'].append(ligne.split("\n")[0])
+                prop_['accepts'].append(ligne.split("\n")[0])
     except Exception:
         print('%s not found' % accept)
 
@@ -48,7 +34,7 @@ def metaDB(path):
             for ligne in offerte:
                 if ligne == "":
                     break
-                prop_['provide'].append(ligne.split("\n")[0])
+                prop_['provides'].append(ligne.split("\n")[0])
     except Exception:
         print('%s not found' % provide)
 
@@ -60,7 +46,7 @@ def metaDB(path):
                 prop_['properties'].append(ligne.split("\n")[0])
     except Exception:
         print('%s not found' % chemin)
-
+    return prop_
 
 
 def octet(entier):
@@ -107,16 +93,40 @@ def path_hierarchy(path):
         hierarchy['size'] = octet(os.path.getsize(path))
     return hierarchy
 
-def insertionMongo(data, collection):
-    start_time = time.time()
+def connexion(collection):
     c = mongo.MongoClient('localhost', 27017)
     db = c['vospace']
     coll = db[collection]
+    return coll
+
+def insertionMongo(data, collection):
+    start_time = time.time()
+    coll = connexion(collection)
     if coll.insert_one(data):
         print("OK")
     else:
         print("Failed")
     print("--- %s seconds ---" % (time.time() - start_time))
+
+def modifMeta(cible, data):
+    coll = connexion('NodeMeta')
+    temp = {}
+    for keys, values in data.items():
+        temp[keys] = values
+    for key, values in temp.items():
+        coll.update_one({'node' : cible},{"$set" : {key : values}})
+
+def metaChecker(cible):
+    start_time = time.time()
+    coll = connexion('NodeMeta')
+    curseur = coll.find({'node':cible})
+    temp = {}
+    for document in curseur:
+        for keys, values in document.items():
+            if keys != "_id":
+                temp[keys] = values
+    print("--- %s seconds ---" % (time.time() - start_time))
+    return temp
 
 # insertionMongo(path_hierarchy("./VOTest/VOSpace/nodes/myresult1"), 'arbre')
 # insertionMongo(path_hierarchy("./VOTest/VOSpace/nodes/myresult2"), 'arbre')
@@ -126,3 +136,13 @@ def insertionMongo(data, collection):
 # insertionMongo(path_hierarchy("./VOTest/VOSpace2/nodes/myresult4"), 'arbre')
 # pp = pprint.PrettyPrinter(indent=4)
 # pp.pprint(path_hierarchy("./VOTest/VOSpace/nodes/myresult1"))
+
+# meta = metaDB("./VOTest/VOSpace/nodes/myresult3")
+# if modifMeta("myresult3", meta):
+#       print("Updated")
+
+# insertionMongo(metaDB("./VOTest/VOSpace/nodes/myresult1"), 'NodeMeta')
+# insertionMongo(metaDB("./VOTest/VOSpace/nodes/myresult2"), 'NodeMeta')
+# insertionMongo(metaDB("./VOTest/VOSpace/nodes/myresult3"), 'NodeMeta')
+
+print(metaChecker('myresult3'))

@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 
 
 class Backend(ABC):
-
     @abstractmethod
     def getNode(self, target):
         # Retourne la représentation XML de la node

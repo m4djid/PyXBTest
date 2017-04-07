@@ -77,8 +77,8 @@ class Voxml(object):
         reparsed = DOM.parseString(chaine_originale)
         return reparsed.toprettyxml(indent="    ")
 
-    def xml_generator(self, action, path, *args):
-        target, direction, location, keepBytes = args
+    def xml_generator(self, *args):
+        action, path, target, direction, location = args
         return
 
 class main(object):
