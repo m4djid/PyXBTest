@@ -4,6 +4,7 @@ from GenericBackend import Backend as fs
 from bddHandler import Handler as bdd
 from copy import deepcopy
 import datetime
+import errno
 
 
 class Vospace(fs, bdd):
@@ -91,14 +92,19 @@ class Vospace(fs, bdd):
 
     def createNode(self, targetUri, type):
         # Creation de la node
-        if not os.path.exists(targetUri) and not bdd.nodeExistsChecker(os.path.basename(targetUri)):
-            try:
-                os.makedirs(targetUri)
-            except OSError:
-                pass
-            if os.path.exists(targetUri):
-                bdd.insertionMongo(self, self.fsToDict(targetUri), 'arbre')
-        print(targetUri + 'already exists')
+        collection = 'arbre'
+        if os.path.exists(targetUri) and bdd.nodeExistsChecker(self, os.path.basename(targetUri)):
+            print(targetUri + ' already exists')
+            return None
+        if os.makedirs(targetUri):
+            print(os.path.basename(targetUri) + ' created')
+        if bdd.insertionMongo(self, self.fsToDict(targetUri), collection):
+            print('BDD updated for ' + targetUri)
+        else:
+            print('Update failed')
+
+
+
 
 
     def setNode(self, targetUri, **kwargs):
@@ -136,3 +142,4 @@ class Vospace(fs, bdd):
 
 a = Vospace()
 print(a.getNode("./VOTest/VOSpace/nodes/myresult1"))
+a.createNode("./VOTest/VOSpace/nodes/myresult4", "z")
