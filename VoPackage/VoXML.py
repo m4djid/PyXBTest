@@ -27,7 +27,7 @@ class Voxml(object):
         self.url_fichier = ''
         self.vu = ''
         self.distant = {}
-        self.racine = './VOTest'
+        self.RACINE = './VOTest'
 
 
     def var_assign(self, node, string, idx):
@@ -77,8 +77,7 @@ class Voxml(object):
         reparsed = DOM.parseString(chaine_originale)
         return reparsed.toprettyxml(indent="    ")
 
-    def xml_generator(self, *args):
-        action, path, target, direction, location = args
+    def xml_generator(self, **kwargs):
         return
 
 class main(object):
