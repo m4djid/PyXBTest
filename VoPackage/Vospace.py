@@ -4,6 +4,8 @@ from GenericBackend import Backend as fs
 from bddHandler import Handler as bdd
 from copy import deepcopy
 import datetime
+import shutil
+from bson.json_util import dumps
 import errno
 
 
@@ -43,11 +45,10 @@ class Vospace(fs, bdd):
         'btime' : 'ivo://ivoa.net/vospace/core#btime',
     }
     def startup(self):
-        self.verif = bdd.connexion(self, 'arbre')
-        if self.verif.find({}).count() == 0:
-            for dir in os.listdir(self.RACINE + '/VOSpace/nodes'):
-                self.modifMeta(self.RACINE + '/VOSpace/nodes/' + dir,'')
-                self.insertionMongo(bdd.fsToDict(self, self.RACINE + '/VOSpace/nodes/' + dir), 'arbre')
+        if bdd.connexion(self, 'arbre').find({}).count() == 0:
+            for dir in os.listdir(self._RACINE + '/VOSpace/nodes'):
+                self.modifMeta(self._RACINE + '/VOSpace/nodes/' + dir,'')
+                self.insertionMongo(bdd.fsToDict(self, self._RACINE + '/VOSpace/nodes/' + dir), 'arbre')
             print("Database ready")
 
     def nodeExists(self, targetUri):
@@ -150,13 +151,13 @@ class Vospace(fs, bdd):
             try:
                 if os.makedirs(targetUri):
                     print(os.path.basename(targetUri) + ' type = ' + type + ' created')
-            except:
-                print('Directory creation failed')
+            except OSError as e:
+                print('Directory creation failed. Error %s' % e)
             try:
                 if self.insertionMongo(self.fsToDict(targetUri), collection):
                     print('BDD updated for ' + targetUri)
-            except:
-                print('BDD update failed')
+            except OSError as e:
+                print('BDD update failed. Error %s' % e)
 
     def setNode(self, targetUri, properties):
         if self.nodeExists(targetUri):
@@ -196,7 +197,22 @@ class Vospace(fs, bdd):
 
     def copyNode(self, targetUri, locationUri):
         # Copie la node et ses enfants
-        pass
+        self.loc = locationUri
+        temp = deepcopy(self.getTree(targetUri))
+        if os.path.exists(locationUri):
+            self.loc = locationUri+"/copy_"+os.path.basename(targetUri)
+        try:
+            shutil.copytree(targetUri, self.loc)
+            self.modifMeta(self.loc, dumps(self.getMeta(targetUri)))
+            temp['path'] = self.loc
+            temp['node'] = os.path.basename(self.loc)
+            self.insertionMongo(temp, 'arbre')
+        except shutil.Error as e:
+            print('Directory not copied. Error: %s' % e)
+            # Copie au même emplacement
+        except OSError as e:
+            print('Directory not copied. Error: %s' % e)
+            # Copie échouée
 
     def moveNode(self, targetUri, locationUri):
         # Deplace la node et ses enfants
@@ -229,7 +245,8 @@ a.startup()
 # print(a.getNode("./VOTest/VOSpace/nodes/myresult1"))
 #a.createNode("./VOTest/VOSpace/nodes/myresult5", "ContainerNode")
 # print(a.nodeExistsChecker(os.path.basename("./VOTest/VOSpace/nodes/myresult4")))
-a.setNode("./VOTest/VOSpace/nodes/myresult5",{'title' : {'Victoire' : 'ivo://ivoa.net/vospace/core#title'},
-                                              'test' : {'ceci est un test' : 'Shoryuken'},
-                                              'description' : {'Du grand n\'importe quoi' : 'ivo://ivoa.net/vospace/core#description'},
-                                              'contributor' : {'Foo' : 'ivo://ivoa.net/vospace/core#contributor'}})
+# a.setNode("./VOTest/VOSpace/nodes/myresult5",{'title' : {'Victoire' : 'ivo://ivoa.net/vospace/core#title'},
+#                                               'test' : {'ceci est un test' : 'Shoryuken'},
+#                                               'description' : {'Du grand n\'importe quoi' : 'ivo://ivoa.net/vospace/core#description'},
+#                                               'contributor' : {'Foo' : 'ivo://ivoa.net/vospace/core#contributor'}})
+#print(a.copyNode("./VOTest/VOSpace/nodes/myresult2", "./VOTest/copy"))
