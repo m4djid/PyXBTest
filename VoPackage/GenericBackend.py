@@ -14,7 +14,7 @@ class Backend(ABC):
         raise NotImplementedError('users must define getNode to use this base class')
 
     @abstractmethod
-    def setNode(self, targetUri, **kwargs):
+    def setNode(self, targetUri, properties):
         # Initialise la node
         raise NotImplementedError('users must define setNode to use this base class')
 

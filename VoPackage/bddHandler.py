@@ -2,6 +2,7 @@ import pymongo as mongo
 import os
 import datetime
 import errno
+from copy import deepcopy
 
 
 class Handler(object):
@@ -11,11 +12,11 @@ class Handler(object):
         provide = path + '/view_provide.txt'
         chemin = path + '/property.txt'
         prop_ = {
-            'node' :  os.path.basename(path),
+            'node' : os.path.basename(path),
             'path' : path[1:],
             'accepts': [],
             'provides' : [],
-            'properties': [],
+            'properties' : [],
         }
         print("start : " + path)
         try:
@@ -73,8 +74,8 @@ class Handler(object):
         owner = str(os.stat(path).st_uid)
         fName = os.path.basename(path)
         hierarchy = {
-            'type': 'folder',
-            'name': fName,
+            'type': 'ContainerNode',
+            'node': fName,
             'path': path,
             'size': taille,
             'modified': mdate,
@@ -87,7 +88,7 @@ class Handler(object):
         except OSError as e:
             if e.errno != errno.ENOTDIR:
                 raise
-            hierarchy['type'] = 'file'
+            hierarchy['type'] = 'DataNode'
             hierarchy['size'] = self.octet(os.path.getsize(path))
         return hierarchy
 
@@ -97,10 +98,12 @@ class Handler(object):
         coll = db[collection]
         return coll
 
-    def nodeExistsChecker(self, node):
+
+    def nodeExistsChecker(self, cible):
         coll = self.connexion('arbre')
-        if coll.find({'node': node}):
+        if coll.find({'node': cible}).count(True):
             return True
+        return False
 
     def insertionMongo(self, data, collection):
         coll = self.connexion(collection)
@@ -109,23 +112,33 @@ class Handler(object):
         else:
             print("Failed")
 
-    def modifMeta(self, cible, data):
+    def getMeta(self, cible):
         coll = self.connexion('NodeMeta')
-        temp = {}
-        for keys, values in data.items():
-            temp[keys] = values
-        for key, values in temp.items():
-            coll.update_one({'node' : cible},{"$set" : {key : values}})
-
-    def metaChecker(self, cible):
-        coll = self.connexion('NodeMeta')
-        curseur = coll.find({'node':cible})
+        curseur = coll.find({'node': cible})
         temp = {}
         for document in curseur:
             for keys, values in document.items():
                 if keys != "_id":
                     temp[keys] = values
         return temp
+
+    def modifMeta(self, cible, data):
+        coll = self.connexion('NodeMeta')
+        if self.getMeta(cible):
+            coll.update({'node' : cible},{"$set" : { 'properties' : data}})
+        else:
+            prop_ = {
+                'node': os.path.basename(cible),
+                'path': cible[1:],
+                'accepts': [],
+                'provides': [],
+                'properties': {},
+            }
+            prop_['properties'] = deepcopy(data)
+            self.insertionMongo(prop_, 'NodeMeta')
+
+
+
 
 
 a = Handler()

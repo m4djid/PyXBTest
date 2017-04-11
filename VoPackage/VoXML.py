@@ -9,25 +9,25 @@ import errno
 
 
 class Voxml(object):
-    def __init__(self):
-        self.prefix = 'vos:'
-        self.suffix = ':vos'
-        self.vosnode = self.prefix + 'node'
-        self.vostransfer = self.prefix + 'transfer'
-        self.vostarget = self.prefix + 'target'
-        self.vosdirect = self.prefix + 'direction'
-        self.vosprot = self.prefix + 'protocol'
-        self.vosendpoint = self.prefix + 'endpoint'
-        self.xmlnsvos = 'xmlns' + self.suffix
-        self.xmnlsw3c = 'xmlns:xs'
-        self.w3c_uri = 'http://www.w3.org/2001/XMLSchema-instance'
-        self.vospace_v = 'http://www.ivoa.net/xml/VOSpace/v2.1'
-        self.uri_v = 'uri'
-        self.attribut_direction = ''
-        self.url_fichier = ''
-        self.vu = ''
-        self.distant = {}
-        self.RACINE = './VOTest'
+
+    prefix = 'vos:'
+    suffix = ':vos'
+    vosnode = prefix + 'node'
+    vostransfer = prefix + 'transfer'
+    vostarget = prefix + 'target'
+    vosdirect = prefix + 'direction'
+    vosprot = prefix + 'protocol'
+    vosendpoint = prefix + 'endpoint'
+    xmlnsvos = 'xmlns' + suffix
+    xmnlsw3c = 'xmlns:xs'
+    w3c_uri = 'http://www.w3.org/2001/XMLSchema-instance'
+    vospace_v = 'http://www.ivoa.net/xml/VOSpace/v2.1'
+    uri_v = 'uri'
+    attribut_direction = ''
+    url_fichier = ''
+    vu = ''
+    distant = {}
+    RACINE = './VOTest'
 
 
     def var_assign(self, node, string, idx):
