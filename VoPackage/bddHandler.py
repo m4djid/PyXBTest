@@ -2,6 +2,7 @@ import pymongo as mongo
 import os
 import datetime
 import errno
+from bson.json_util import dumps
 from copy import deepcopy
 
 
@@ -98,13 +99,14 @@ class Handler(object):
         coll = db[collection]
         return coll
 
-
+    # Check if node exists in mongoDB
     def nodeExistsChecker(self, cible):
         coll = self.connexion('arbre')
         if coll.find({'node': cible}).count(True):
             return True
         return False
 
+    # Insert into mongoDB
     def insertionMongo(self, data, collection):
         coll = self.connexion(collection)
         if coll.insert_one(data):
@@ -112,6 +114,7 @@ class Handler(object):
         else:
             print("Failed")
 
+    # Get the metadata representation from mongoDB
     def getMeta(self, cible):
         coll = self.connexion('NodeMeta')
         curseur = coll.find({'node': cible})
@@ -122,20 +125,38 @@ class Handler(object):
                     temp[keys] = values
         return temp
 
+    # Get the tree representation from mongoDB
+    def getTree(self, cible):
+        coll = self.connexion('arbre')
+        curseur = coll.find({'node': os.path.basename(cible)})
+        temp = {}
+        for document in curseur:
+            for keys, values in document.items():
+                if keys != "_id":
+                    temp[keys] = values
+        return temp
+
+    # Update node metadata, if not set, create new representation
     def modifMeta(self, cible, data):
         coll = self.connexion('NodeMeta')
         if self.getMeta(cible):
             coll.update({'node' : cible},{"$set" : { 'properties' : data}})
+            with open(cible+"/"+'meta'+os.path.basename(cible),'w') as m:
+                m.write(dumps(self.getMeta(cible)))
+                m.close()
         else:
-            prop_ = {
+            self.prop_ = {
                 'node': os.path.basename(cible),
                 'path': cible[1:],
                 'accepts': [],
                 'provides': [],
                 'properties': {},
             }
-            prop_['properties'] = deepcopy(data)
-            self.insertionMongo(prop_, 'NodeMeta')
+            self.prop_['properties'] = deepcopy(data)
+            self.insertionMongo(self.prop_, 'NodeMeta')
+            with open(cible+"/"+'meta'+os.path.basename(cible),'w') as m:
+                m.write(dumps((self.prop_)))
+                m.close()
 
 
 
@@ -151,6 +172,5 @@ a = Handler()
 # a.insertionMongo(a.fsToDict("./VOTest/VOSpace/nodes/myresult1"), 'arbre')
 # a.insertionMongo(a.fsToDict("./VOTest/VOSpace/nodes/myresult2"), 'arbre')
 # a.insertionMongo(a.fsToDict("./VOTest/VOSpace/nodes/myresult3"), 'arbre')
-
 
 # print(a.metaChecker('myresult1'))
