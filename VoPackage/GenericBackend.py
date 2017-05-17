@@ -9,7 +9,7 @@ class Backend(ABC):
         raise NotImplementedError('users must define getNode to use this base class')
 
     @abstractmethod
-    def createNode(self, targetUri, type):
+    def createNode(self, targetUri):
         # Creation de la node
         raise NotImplementedError('users must define getNode to use this base class')
 
@@ -52,11 +52,3 @@ class Backend(ABC):
     def pullToVoSpace(self, targetUri, endpointUri):
         # Execute un pull to VOSpace
         raise NotImplementedError('users must define pullToVoSpace to use this base class')
-
-    @abstractmethod
-    def getDirectory(self, cible, path):
-        raise NotImplementedError
-
-    @abstractmethod
-    def getEndpoint(self, path):
-        raise NotImplementedError

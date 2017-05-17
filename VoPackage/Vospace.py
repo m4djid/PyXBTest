@@ -1,212 +1,132 @@
 # Classe traduisant les instructions en actions
 import os
-from GenericBackend import Backend as fs
-from bddHandler import Handler as bdd
-from copy import deepcopy
-import datetime
 import shutil
+from copy import deepcopy
 from bson.json_util import dumps
-import errno
+from VoPackage.database import Handler as bdd
+from VoPackage.genericbackend import Backend as fs
+from VoPackage.settings import fsToDict
+from VoPackage.voxml import Voxml as xml
+from pymongo.errors import CursorNotFound
 
 
-class Vospace(fs, bdd):
+class Vospace(fs):
 
-    _RACINE = './VOTest'
-    _PROTOCOL = [
-        'ivo://ivoa.net/vospace/core#httpget',
-        'ivo://ivoa.net/vospace/core#httppost',
-        'ivo://ivoa.net/vospace/core#httpput',
-        'ivo://ivoa.net/vospace/core#httpdelete'
-    ]
-    _PROPERTIES = {
-        'title' : 'ivo://ivoa.net/vospace/core#title',
-        'creator' : ' ivo://ivoa.net/vospace/core#creator',
-        'subject' : ' ivo://ivoa.net/vospace/core#subject',
-        'description' : 'ivo://ivoa.net/vospace/core#description',
-        'publisher' : 'ivo://ivoa.net/vospace/core#publisher',
-        'contributor' : 'ivo://ivoa.net/vospace/core#contributor',
-        'date' : 'ivo://ivoa.net/vospace/core#date',
-        'type' : 'ivo://ivoa.net/vospace/core#type',
-        'format' : 'ivo://ivoa.net/vospace/core#format',
-        'identifier' : 'ivo://ivoa.net/vospace/core#identifier',
-        'source' : 'ivo://ivoa.net/vospace/core#source',
-        'language' : 'ivo://ivoa.net/vospace/core#language',
-        'relation' : 'ivo://ivoa.net/vospace/core#relation',
-        'coverage' : 'ivo://ivoa.net/vospace/core#coverage',
-        'rights' : 'ivo://ivoa.net/vospace/core#rights',
-        'availableSpace' : 'ivo://ivoa.net/vospace/core#availableSpace',
-        'groupread' : 'ivo://ivoa.net/vospace/core#groupread',
-        'groupwrite' : 'ivo://ivoa.net/vospace/core#groupwrite',
-        'publicread' : 'ivo://ivoa.net/vospace/core#publicread',
-        'quota' : 'ivo://ivoa.net/vospace/core#quota',
-        'length' : 'ivo://ivoa.net/vospace/core#length',
-        'mtime' : 'ivo://ivoa.net/vospace/core#mtime',
-        'ctime' : 'ivo://ivoa.net/vospace/core#ctime',
-        'btime' : 'ivo://ivoa.net/vospace/core#btime',
-    }
-    def startup(self):
-        if bdd.connexion(self, 'arbre').find({}).count() == 0:
-            for dir in os.listdir(self._RACINE + '/VOSpace/nodes'):
-                self.modifMeta(self._RACINE + '/VOSpace/nodes/' + dir,'')
-                self.insertionMongo(bdd.fsToDict(self, self._RACINE + '/VOSpace/nodes/' + dir), 'arbre')
-            print("Database ready")
+    RACINE = './VOTest'
 
-    def nodeExists(self, targetUri):
-        if os.path.exists(targetUri) or self.nodeExistsChecker(os.path.basename(targetUri)):
-            return True
-        return False
 
-    def getDirectory(self, cible, path):
-        liste = []
-        for dirname, dirnames, files in os.walk(path):
-            for subdirname in dirnames:
-                liste.append(os.path.join(dirname, subdirname)) if subdirname == os.path.basename(cible) else None
-        return liste
-
-    def getEndpoint(self, path):
-        type = ''
-        list = {}
-        for file in os.listdir(path):
-            if os.path.isfile(file):
-                if  (file.split('.')[1] is 'zip' or file.split('.')[1] is 'tar.gz'):
-                    type = 'StructuredDataNode'
-                else:
-                    type = 'UnstructuredDataNode'
-            else:
-                type = 'ContainerNode'
-            list[os.path.join(file)] = type
-        return list
-
-    # def octet(self, entier):
-    #     taille_ = entier
-    #     retour = ''
-    #     if taille_ >= 1000 and taille_ < 1000000:
-    #         retour = str(round(taille_ / 100, 2)) + 'ko'
-    #     elif taille_ >= 1000000:
-    #         retour = str(round(taille_ / 1000000, 2)) + 'Mo'
-    #     elif taille_ < 1000:
-    #         retour = str(taille_) + 'o'
-    #     return retour
     #
-    # def getSizeDir(self, start_path):
-    #     total_size = 0
-    #     for dirpath, dirnames, filenames in os.walk(start_path):
-    #         for f in filenames:
-    #                 fp = os.path.join(dirpath, f)
-    #                 total_size += os.path.getsize(fp)
-    #     return self.octet(total_size)
-    #
-    # def fsToDict(self, path):
-    #     taille = self.getSizeDir(path)
-    #     tempdate = datetime.datetime.fromtimestamp(os.path.getmtime(path))
-    #     mdate =  tempdate.strftime("%Y-%m-%d %H:%M:%S")
-    #     owner = str(os.stat(path).st_uid)
-    #     fName = os.path.basename(path)
-    #     hierarchy = {
-    #         'type': 'ContainerNode',
-    #         'name': fName,
-    #         'path': path,
-    #         'size': taille,
-    #         'modified': mdate,
-    #         'ownerId' : owner,
-    #     }
-    #
-    #     try:
-    #         for index, contents in enumerate(os.listdir(path)):
-    #             hierarchy["subnode : "+str(index)] = self.fsToDict(os.path.join(path, contents))
-    #     except OSError as e:
-    #         if e.errno != errno.ENOTDIR:
-    #             raise
-    #         hierarchy['type'] = 'DataNode'
-    #         hierarchy['size'] = self.octet(os.path.getsize(path))
-    #     return hierarchy
+    # # Check if node exists in the FileSystem or DB
+    # def nodeExists(self, targetPath):
+    #     if os.path.exists(targetPath) or bdd().nodeExistsChecker(os.path.basename(targetPath)):
+    #         return True
+    #     return False
 
-    def getNode(self, targetUri):
-        # Retourne la représentation XML de la node
-        if self.nodeExists(targetUri):
-            if os.path.isfile(targetUri):
-                type = 'DataNode'
-            type = 'ContainerNode'
-            node = {
-                 os.path.basename(targetUri) : type,
+    # def getDirectory(self, cible, path):
+    #     liste = []
+    #     for dirname, dirnames, files in os.walk(path):
+    #         for subdirname in dirnames:
+    #             liste.append(os.path.join(dirname, subdirname)) if subdirname == os.path.basename(cible) else None
+    #     return liste
+
+    # # Get endpoint list from the FileSystem
+    # def getEndpoint(self, path):
+    #     type = ''
+    #     list = {}
+    #     for file in os.listdir(path):
+    #         if os.path.isfile(file):
+    #             type = 'StructuredDataNode'
+    #         else:
+    #             type = 'ContainerNode'
+    #         list[os.path.join(file)] = type
+    #     return list
+
+    # Get the service's protocols/views/properties list
+    def getVOSpaceSettings(self, meta):
+        retour = {}
+        coll = bdd().connexion()
+        curseur = coll.find({'name': 'vo'+meta})
+        if curseur:
+            for documents in curseur:
+                for keys, values in documents.items():
+                    if keys == "metadata":
+                        for k, v in values.items():
+                                retour[k] = v
+        return xml().xml_generator(meta, retour)
+
+    # Get the node data
+    def getNode(self, node):
+        # Retourne la représentation de la node
+        if bdd().nodeExistsChecker(node):
+            # type = ''
+            # if os.path.isfile(targetPath):
+            #     type = 'StructuredDataNode'
+            # elif os.path.isdir(targetPath):
+            #     type = 'ContainerNode'
+            self.node = {
+                 # os.path.basename(targetPath) : type,
                     'endpoints' : {},
                     'properties' : {},
                     'accepts' : {},
                     'provides' : {}
                     }
-            node['endpoints'] = self.getEndpoint(targetUri)
-            meta = self.getMeta(os.path.basename(targetUri))
-            node['properties'] = deepcopy(meta['properties'])
-            node['accepts'] = deepcopy(meta['accepts'])
-            node['provides'] = deepcopy(meta['provides'])
-            return node
-        return "Node Not Found"
+            temp = bdd().getMeta(node)
+            for keys, values in temp.items():
+                if values in ["ContainerNode", "StructuredDataNode", "UnstructuredDataNode", "LinkNode"]:
+                    self.node['endpoints'][keys] = values
+            meta = bdd().getMeta(node)
+            self.node['path'] = deepcopy(meta['path'])
+            self.node['properties'] = deepcopy(meta['properties'])
+            self.node['accepts'] = deepcopy(meta['accepts'])
+            self.node['provides'] = deepcopy(meta['provides'])
+            return xml().xml_generator('get',self.node)
+        else :
+            return FileNotFoundError
 
-
-
-    def createNode(self, targetUri, type):
+    def createNode(self, targetPath):
         # Creation de la node
-        collection = 'arbre'
-        if not self.nodeExists(targetUri):
-            try:
-                if os.makedirs(targetUri):
-                    print(os.path.basename(targetUri) + ' type = ' + type + ' created')
-            except OSError as e:
-                print('Directory creation failed. Error %s' % e)
-            try:
-                if self.insertionMongo(self.fsToDict(targetUri), collection):
-                    print('BDD updated for ' + targetUri)
-            except OSError as e:
-                print('BDD update failed. Error %s' % e)
+        collection = 'VOSpaceFiles'
+        try:
+            if not bdd().nodeExistsChecker(os.path.basename(targetPath)):
+                try:
+                    os.makedirs(targetPath)
 
-    def setNode(self, targetUri, properties):
-        if self.nodeExists(targetUri):
+                except OSError as e:
+                    return 'Directory creation failed. Error %s' % e
+                try:
+                    bdd().insertionMongo(fsToDict(targetPath))
+                except OSError as e:
+                    return 'BDD update failed. Error %s' % e
+        except FileExistsError as e:
+            return e
+
+    def setNode(self, targetPath, properties):
+        if bdd().nodeExistsChecker(os.path.basename(targetPath)):
             self.properties = properties
-            validator = self._PROPERTIES
+            validator = {}
+            for documents in bdd().connexion().find({'node': os.path.basename(targetPath)}):
+                for keys, values in documents.items():
+                    if keys == 'properties':
+                        for k, v in values.items():
+                            validator[k] = v
+
             argProp = set(self.properties)
             valProp = set(validator)
-            propDict = {
-                'title': {},
-                'creator': {},
-                'subject': {},
-                'description': {},
-                'publisher': {},
-                'contributor': {},
-                'date': {},
-                'type': {},
-                'format': {},
-                'identifier': {},
-                'source': {},
-                'language': {},
-                'relation': {},
-                'coverage': {},
-                'rights': {},
-                'availableSpace': {},
-                'groupread': {},
-                'groupwrite': {},
-                'publicread': {},
-                'quota': {},
-                'length': {},
-                'mtime' : {'Modified' : datetime.datetime.fromtimestamp(os.path.getmtime(targetUri)).strftime("%Y-%m-%d %H:%M:%S")},
-                'ctime': {'MetaData modified' : datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
-                'btime': {'Creation date' : datetime.datetime.fromtimestamp(os.path.getctime(targetUri)).strftime("%Y-%m-%d %H:%M:%S")},
-            }
-            for name in argProp.intersection(valProp):
-                propDict[name] = deepcopy(self.properties[name])
-            self.modifMeta(os.path.basename(targetUri), propDict)
+            propDict = bdd().getPropertiesDict()
+            for key in argProp.intersection(valProp):
+                propDict[key] = deepcopy(self.properties[key])
+                bdd().updateMeta(targetPath, key, propDict[key])
 
-    def copyNode(self, targetUri, locationUri):
+    def copyNode(self, targetPath, locationPath):
         # Copie la node et ses enfants
-        self.loc = locationUri
-        temp = deepcopy(self.getTree(targetUri))
-        if os.path.exists(locationUri):
-            self.loc = locationUri+"/copy_"+os.path.basename(targetUri)
+        self.loc = locationPath
+        temp = deepcopy(bdd().getTree(targetPath))
         try:
-            shutil.copytree(targetUri, self.loc)
-            self.modifMeta(self.loc, dumps(self.getMeta(targetUri)))
+            shutil.copytree(targetPath, self.loc)
+            bdd().copyNode(self.loc, dumps(bdd().getMeta(targetPath)))
             temp['path'] = self.loc
             temp['node'] = os.path.basename(self.loc)
-            self.insertionMongo(temp, 'arbre')
+            bdd().insertionMongo(temp)
         except shutil.Error as e:
             print('Directory not copied. Error: %s' % e)
             # Copie au même emplacement
@@ -214,39 +134,57 @@ class Vospace(fs, bdd):
             print('Directory not copied. Error: %s' % e)
             # Copie échouée
 
-    def moveNode(self, targetUri, locationUri):
+    def moveNode(self, targetPath, locationPath):
         # Deplace la node et ses enfants
         pass
 
-    def deleteNode(self, targetUri):
+    def deleteNode(self, targetPath):
         # Deplace la node et ses enfants
-        pass
+        if os.path.exists(targetPath):
+            if os.path.isdir(targetPath):
+                shutil.rmtree(targetPath)
+            elif os.path.isfile(targetPath):
+                os.remove(targetPath)
+            try:
+                bdd().connexion().delete_one({'node': os.path.basename(targetPath)})
+            except CursorNotFound:
+                return False
+        else:
+            raise FileNotFoundError
 
-    def pushToVoSpace(self, targetUri, **kwargs):
+    def pushToVoSpace(self, targetPath, **kwargs):
         # Execute un push to VOSpace
         pass
 
-    def pushFromVoSpace(self, targetUri, **kwargs):
+    def pushFromVoSpace(self, targetPath, **kwargs):
         # Execute un push from VOSpace
         pass
 
-    def pullFromVoSpace(self, targetUri, **kwargs):
+    def pullFromVoSpace(self, targetPath, **kwargs):
         # Execute un pull from VOSpace
         pass
 
-    def pullToVoSpace(self, targetUri, endpointUri):
+    def pullToVoSpace(self, targetPath, endpointUri):
         # Execute un pull to VOSpace
         pass
 
+#
+# a = Vospace()
+# print(bdd().nodeExistsChecker(os.path.basename("./VOTest/VOSpace/nodes/myresult1")))
+# a.startup()
+# # print(a.getEndpoint("./VOTest/VOSpace/nodes/myresult1"))
+# # for k,v in a.getNode("./VOTest/VOSpace/nodes/myresult1")['properties']['type'].items():
+# #     print(v)
+# # a.createNode("./VOTest/VOSpace/nodes/myresult5", "ContainerNode")
+# # print(a.nodeExistsChecker(os.path.basename("./VOTest/VOSpace/nodes/myresult4")))
+# a.setNode("./VOTest/VOSpace/nodes/myresult1",{'title' : {'IVOA':'ivo://ivoa.net/vospace/core#title', 'readonly': 'false'},
+#                                                'description' : {'Yet another node' : 'ivo://ivoa.net/vospace/core#description', 'readonly': 'false'},
+#                                                'contributor' : {'Foo' : 'ivo://ivoa.net/vospace/core#contributor', 'readonly': 'false'},
+#                                                 'language': {'Farsi' : 'ivo://ivoa.net/vospace/core#language', 'readonly': 'false'}})
+# # print(a.copyNode("./VOTest/VOSpace/nodes/myresult1", "./VOTest/copy/myresult1"))
+# bdd().setViews("./VOTest/VOSpace/nodes/myresult1",{'anyview' : 'ivo://ivoa.net/vospace/core#anyview', 'fits' : 'ivo://ivoa.net/vospace/core#fits' },
+#                                                      {'default' : 'ivo://ivoa.net/vospace/core#defaultview', 'fits' :  'ivo://ivoa.net/vospace/core#fits' })
 
-a = Vospace()
-a.startup()
-
-# print(a.getNode("./VOTest/VOSpace/nodes/myresult1"))
-#a.createNode("./VOTest/VOSpace/nodes/myresult5", "ContainerNode")
-# print(a.nodeExistsChecker(os.path.basename("./VOTest/VOSpace/nodes/myresult4")))
-# a.setNode("./VOTest/VOSpace/nodes/myresult5",{'title' : {'Victoire' : 'ivo://ivoa.net/vospace/core#title'},
-#                                               'test' : {'ceci est un test' : 'Shoryuken'},
-#                                               'description' : {'Du grand n\'importe quoi' : 'ivo://ivoa.net/vospace/core#description'},
-#                                               'contributor' : {'Foo' : 'ivo://ivoa.net/vospace/core#contributor'}})
-#print(a.copyNode("./VOTest/VOSpace/nodes/myresult2", "./VOTest/copy"))
+# pprint(bdd().getMeta("./VOTest/copy/myresult1"))
+# a.deleteNode("./VOTest/copy/myresult2/metamyresult2")
+# print(os.path.exists("./VOTest/copy/myresult2/metamyresult2"))

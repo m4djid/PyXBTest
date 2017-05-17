@@ -5,9 +5,8 @@
 
 import os
 import datetime
-import errno
-from pprint import pprint
-from database import Handler as bdd
+from VoPackage.database import Handler as bdd
+from uuid import uuid1
 
 RACINE = "./VOTest"
 PROTOCOL = {
@@ -52,30 +51,30 @@ VIEWS = {
     }
 
 PropertiesDict = {
-    'title': {"readonly" : "false"},
-    'creator': {"readonly" : "false"},
-    'subject': {"readonly" : "false"},
-    'description': {"readonly" : "false"},
-    'publisher': {"readonly" : "false"},
-    'contributor': {"readonly" : "false"},
-    'date': {"readonly" : "false"},
-    'type': {"readonly" : "true"},
-    'format': {"readonly" : "false"},
-    'identifier': {"readonly" : "false"},
-    'source': {"readonly" : "false"},
-    'language': {"readonly" : "false"},
-    'relation': {"readonly" : "false"},
-    'coverage': {"readonly" : "false"},
-    'rights': {"readonly" : "false"},
-    'availableSpace': {"readonly" : "false"},
-    'groupread': {"readonly" : "false"},
-    'groupwrite': {"readonly" : "false"},
-    'publicread': {"readonly" : "false"},
-    'quota': {"readonly" : "false"},
-    'length': {"readonly" : "false"},
-    'mtime': {"readonly" : "true"},
-    'ctime': {"readonly" : "true"},
-    'btime': {"readonly" : "true"},
+    'title': {"readonly" : False},
+    'creator': {"readonly" : False},
+    'subject': {"readonly" : False},
+    'description': {"readonly" : False},
+    'publisher': {"readonly" : False},
+    'contributor': {"readonly" : False},
+    'date': {"readonly" : False},
+    'type': {"readonly" : True},
+    'format': {"readonly" : False},
+    'identifier': {"readonly" : False},
+    'source': {"readonly" : False},
+    'language': {"readonly" : False},
+    'relation': {"readonly" : False},
+    'coverage': {"readonly" : False},
+    'rights': {"readonly" : False},
+    'availableSpace': {"readonly" : False},
+    'groupread': {"readonly" : False},
+    'groupwrite': {"readonly" : False},
+    'publicread': {"readonly" : False},
+    'quota': {"readonly" : False},
+    'length': {"readonly" : False},
+    'mtime': {"readonly" : True},
+    'ctime': {"readonly" : True},
+    'btime': {"readonly" : True},
 }
 
 def octet(entier):
@@ -101,83 +100,97 @@ def getSizeDir(start_path):
 
 # Get FileSystem representation as dictionary
 def fsToDict(path):
-    taille = getSizeDir(path)
     tempdate = datetime.datetime.fromtimestamp(os.path.getmtime(path))
     mdate = tempdate.strftime("%Y-%m-%d %H:%M:%S")
     owner = str(os.stat(path).st_uid)
     fName = os.path.basename(path)
-
 
     hierarchy = {
         'node': fName,
         'path': path,
         'ownerId': owner,
         'properties': bdd().getPropertiesDict(),
-        'parent' : os.path.basename(os.path.abspath(os.path.join(path, os.pardir))),
+        'parent': os.path.basename(os.path.abspath(os.path.join(path, os.pardir))),
+        'ancestor': [],
         'accepts': [],
-        'provides': []
+        'provides': [],
     }
-    hierarchy['properties']['mtime'] = {'Modified': mdate, 'readonly' : 'true'}
+    hierarchy['properties']['mtime'] = {'Modified': mdate, 'readonly': True}
     hierarchy['properties']['ctime'] = {'MetaData modified': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                        'readonly' : 'true'}
+                                        'readonly': True}
     hierarchy['properties']['btime'] = {
         'Creation date': datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime(
-            "%Y-%m-%d %H:%M:%S"), 'readonly' : 'true'}
-    hierarchy['properties']['type'] = {'type': 'ContainerNode', 'readonly' : 'true'}
-    try:
-        for index, contents in enumerate(os.listdir(path)):
-            hierarchy['children'] = [fsToDict(os.path.join(path, contents))]
-
-    except OSError as e:
-        if e.errno != errno.ENOTDIR:
-            raise
-        hierarchy['properties']['type'] = {'type': 'StructuredDataNode', 'readonly' : 'true'}
-        hierarchy['size'] = octet(os.path.getsize(path))
+            "%Y-%m-%d %H:%M:%S"), 'readonly': True}
+    if os.path.isdir(path):
+        hierarchy['properties']['type'] = {'type': 'ContainerNode', 'readonly': True}
+    elif os.path.isfile(path):
+        hierarchy['properties']['type'] = {'type': 'DataNode', 'readonly': True}
+    hierarchy['size'] = octet(os.path.getsize(path))
+    mathusalem = path.split(os.sep)
+    list = [".", "VOTest", "VOSpace", "nodes", hierarchy['parent'], hierarchy['node']]
+    for items in mathusalem:
+        if items not in list:
+            hierarchy['ancestor'].append(items)
     return hierarchy
+
+def populateMeta():
+    meta = [{'name': 'PROPERTIES', 'metadata': PROPERTIES, 'service' : 'vospace'},
+            {'name': 'PROTOCOL', 'metadata': PROTOCOL, 'service' : 'vospace'},
+            {'name': 'propertiesdict', 'metadata': PropertiesDict, 'service' : 'vospace'},
+            {'name': 'voprotocols', 'metadata': {
+                'accepts': {'get': 'ivo://ivoa.net/vospace/core#httpget',
+                            'put': 'ivo://ivoa.net/vospace/core#httpput'},
+                'provides': {'get': 'ivo://ivoa.net/vospace/core#httpget',
+                             'put': 'ivo://ivoa.net/vospace/core#httpput'}}
+                , 'service': 'vospace'},
+            {'name': 'voviews', 'metadata': {
+                'accepts': {'anyview': 'ivo://ivoa.net/vospace/core#anyview',
+                            'fits': 'ivo://ivoa.net/vospace/core#fits',
+                            'votable': 'ivo://ivoa.net/vospace/core#votable'},
+                'provides': {'default': 'ivo://ivoa.net/vospace/core#defaultview',
+                             'fits': 'ivo://ivoa.net/vospace/core#fits',
+                             'votable': 'ivo://ivoa.net/vospace/core#votable'}}
+                , 'service': 'vospace'},
+            {'name': 'voproperties', 'metadata': {
+                'accepts': {},
+                'provides': {},
+                'contains': {'date' : 'ivo://ivoa.net/vospace/core#date'}
+            }, 'service' : 'vospace'}]
+    for items in meta:
+        bdd().insertionMongo(items)
+    print("VOSpace property list OK")
+    print("VOSpace protocol list OK")
+    print("VOSpace view list OK")
+    print("Service's metadata ready")
+
+def populateFiles():
+        for dir, subdirs, files in os.walk("./VOTest/VOSpace/nodes/" ):
+            for x in subdirs:
+                bdd.insertionMongo(bdd(), fsToDict(os.path.join(dir, x)))
+            for y in files:
+                bdd.insertionMongo(bdd(), fsToDict(os.path.join(dir, y)))
 
  # Startup check up, if the app crashed and the DB is empty, it update it from FS
 def startup():
-    if bdd.connexion(bdd(), 'VOSpaceMeta').find({}).count() == 0:
-        print("Metadata's Database empty")
-        print("Updating Database from FileSystem")
-        meta = [{'name': 'PROPERTIES', 'metadata' : PROPERTIES},{ 'name': 'PROTOCOL', 'metadata': PROTOCOL}, {'name': 'propertiesdict', 'metadata' : PropertiesDict},
-                {'name' :'voprotocols', 'metadata' : {
-                    'accepts' : {'get' : 'ivo://ivoa.net/vospace/core#httpget','put' : 'ivo://ivoa.net/vospace/core#httpput'},
-                    'provides' : {'get' : 'ivo://ivoa.net/vospace/core#httpget','put' : 'ivo://ivoa.net/vospace/core#httpput'}}},
-                {'name': 'voviews', 'metadata' : {
-                    'accepts': {'anyview' : 'ivo://ivoa.net/vospace/core#anyview',
-                                'fits': 'ivo://ivoa.net/vospace/core#fits',
-                                'votable': 'ivo://ivoa.net/vospace/core#votable'},
-                    'provides': {'default' : 'ivo://ivoa.net/vospace/core#defaultview',
-                                 'fits': 'ivo://ivoa.net/vospace/core#fits',
-                                 'votable': 'ivo://ivoa.net/vospace/core#votable'}}},
-                {'name': 'voproperties', 'metadata' : {
-                    'accepts' : {},
-                    'provides' : {},
-                    'contains' : {}
-                }}]
-        for items in meta:
-            bdd().insertionMongo(items,'VOSpaceMeta')
-        print("VOSpace property list OK")
-        print("VOSpace protocol list OK")
-        print("VOSpace view list OK")
+    if bdd.connexion(bdd()).find({}).count() == 0:
+        populateMeta()
+        populateFiles()
         print("Database ready")
     else:
-        print("Database : OK")
-
-    if bdd.connexion(bdd(), 'VOSpaceFiles').find({}).count() == 0:
-        for dir in os.listdir(RACINE + '/VOSpace/nodes'):
-            bdd().insertionMongo(fsToDict(RACINE + '/VOSpace/nodes/' + dir), 'VOSpaceFiles')
-        print("File's Database ready")
-
-        print("Database ready")
-    else:
+        # TO DO : Comparaison FS et DB au lancement.
+        # database = []
+        # FS = []
+        # cursor = bdd.connexion(bdd()).find({'node': { '$exists' : True }},{'_id': False})
+        # for items in cursor:
+        #     database.append(items)
+        # for items in os.listdir("./VOTest/VOSpace/nodes/"):
+        #     for dir, subdirs, files in os.walk("./VOTest/VOSpace/nodes/" + items):
+        #         for x in subdirs:
+        #             FS.append(fsToDict(os.path.join(dir, x)))
+        #         for y in files:
+        #             FS.append(fsToDict(os.path.join(dir, y)))
         print("Database : OK")
 
 
 startup()
-# print(os.listdir(RACINE + '/VOSpace/nodes'))
-# for dir in os.listdir(RACINE + '/VOSpace/nodes'):
-#     pprint(fsToDict(RACINE + '/VOSpace/nodes/' + dir))
-#     print('**************')
 
