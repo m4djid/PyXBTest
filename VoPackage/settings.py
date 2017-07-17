@@ -4,11 +4,11 @@
 # Set the service settings
 
 import os
-import datetime
+from datetime import datetime
 from VoPackage.database import Handler as bdd
 from uuid import uuid1
 
-RACINE = "./VOTest"
+RACINE = "./nodes"
 PROTOCOL = {
         'get' : 'ivo://ivoa.net/vospace/core#httpget',
         'post' : 'ivo://ivoa.net/vospace/core#httppost',
@@ -16,30 +16,30 @@ PROTOCOL = {
         'delete' : 'ivo://ivoa.net/vospace/core#httpdelete'
     }
 PROPERTIES = {
-        'title' : 'ivo://ivoa.net/vospace/core#title',
-        'creator' : ' ivo://ivoa.net/vospace/core#creator',
-        'subject' : ' ivo://ivoa.net/vospace/core#subject',
-        'description' : 'ivo://ivoa.net/vospace/core#description',
-        'publisher' : 'ivo://ivoa.net/vospace/core#publisher',
-        'contributor' : 'ivo://ivoa.net/vospace/core#contributor',
-        'date' : 'ivo://ivoa.net/vospace/core#date',
-        'type' : 'ivo://ivoa.net/vospace/core#type',
-        'format' : 'ivo://ivoa.net/vospace/core#format',
-        'identifier' : 'ivo://ivoa.net/vospace/core#identifier',
-        'source' : 'ivo://ivoa.net/vospace/core#source',
-        'language' : 'ivo://ivoa.net/vospace/core#language',
-        'relation' : 'ivo://ivoa.net/vospace/core#relation',
-        'coverage' : 'ivo://ivoa.net/vospace/core#coverage',
-        'rights' : 'ivo://ivoa.net/vospace/core#rights',
-        'availableSpace' : 'ivo://ivoa.net/vospace/core#availableSpace',
-        'groupread' : 'ivo://ivoa.net/vospace/core#groupread',
-        'groupwrite' : 'ivo://ivoa.net/vospace/core#groupwrite',
-        'publicread' : 'ivo://ivoa.net/vospace/core#publicread',
-        'quota' : 'ivo://ivoa.net/vospace/core#quota',
-        'length' : 'ivo://ivoa.net/vospace/core#length',
-        'mtime' : 'ivo://ivoa.net/vospace/core#mtime',
-        'ctime' : 'ivo://ivoa.net/vospace/core#ctime',
-        'btime' : 'ivo://ivoa.net/vospace/core#btime',
+        'title' : '',
+        'creator' : '',
+        'subject' : '',
+        'description' : '',
+        'publisher' : '',
+        'contributor' : '',
+        'date' : '',
+        'type' : '',
+        'format' : '',
+        'identifier' : '',
+        'source' : '',
+        'language' : '',
+        'relation' : '',
+        'coverage' : '',
+        'rights' : '',
+        'availableSpace' : '',
+        'groupread' : '',
+        'groupwrite' : '',
+        'publicread' : '',
+        'quota' : '',
+        'length' : '',
+        'mtime' : '',
+        'ctime' : '',
+        'btime' : '',
     }
 VIEWS = {
         'default' : 'ivo://ivoa.net/vospace/core#defaultview',
@@ -51,30 +51,30 @@ VIEWS = {
     }
 
 PropertiesDict = {
-    'title': {"readonly" : False},
-    'creator': {"readonly" : False},
-    'subject': {"readonly" : False},
-    'description': {"readonly" : False},
-    'publisher': {"readonly" : False},
-    'contributor': {"readonly" : False},
-    'date': {"readonly" : False},
-    'type': {"readonly" : True},
-    'format': {"readonly" : False},
-    'identifier': {"readonly" : False},
-    'source': {"readonly" : False},
-    'language': {"readonly" : False},
-    'relation': {"readonly" : False},
-    'coverage': {"readonly" : False},
-    'rights': {"readonly" : False},
-    'availableSpace': {"readonly" : False},
-    'groupread': {"readonly" : False},
-    'groupwrite': {"readonly" : False},
-    'publicread': {"readonly" : False},
-    'quota': {"readonly" : False},
-    'length': {"readonly" : False},
-    'mtime': {"readonly" : True},
-    'ctime': {"readonly" : True},
-    'btime': {"readonly" : True},
+    'title': {"title":'', "readonly" : "False"},
+    'creator': {"creator":'',"readonly" : "False"},
+    'subject': {"subject": '', "readonly" : "False"},
+    'description': {"description": '', "readonly" : "False"},
+    'publisher': {"publisher": '', "readonly" : "False"},
+    'contributor': {"contributor": '', "readonly" : "False"},
+    'date': {"date": '', "readonly" : "False"},
+    'type': {"type": '', "readonly" : "True"},
+    'format': {"format": '', "readonly" : "False"},
+    'identifier': {"identifier": '', "readonly" : "False"},
+    'source': {"source": '',"readonly" : "False"},
+    'language': {"language": '',"readonly" : "False"},
+    'relation': {"relation": '',"readonly" : "False"},
+    'coverage': {"coverage": '',"readonly" : "False"},
+    'rights': {"rights": '',"readonly" : "False"},
+    'availableSpace': {"availableSpace": '',"readonly" : "False"},
+    'groupread': {"groupread": '',"readonly" : "False"},
+    'groupwrite': {"groupwrite": '',"readonly" : "False"},
+    'publicread': {"publicread": '',"readonly" : "False"},
+    'quota': {"quota": '',"readonly" : "False"},
+    'length': {"length": '',"readonly" : "False"},
+    'mtime': {"mtime": '',"readonly" : "True"},
+    'ctime': {"ctime": '',"readonly" : "True"},
+    'btime': {"btime": '',"readonly" : "True"},
 }
 
 def octet(entier):
@@ -99,8 +99,8 @@ def getSizeDir(start_path):
 
 
 # Get FileSystem representation as dictionary
-def fsToDict(path):
-    tempdate = datetime.datetime.fromtimestamp(os.path.getmtime(path))
+def fsToDictionary(path):
+    tempdate = datetime.fromtimestamp(os.path.getmtime(path))
     mdate = tempdate.strftime("%Y-%m-%d %H:%M:%S")
     owner = str(os.stat(path).st_uid)
     fName = os.path.basename(path)
@@ -109,22 +109,23 @@ def fsToDict(path):
         'node': fName,
         'path': path,
         'ownerId': owner,
+        'busy': "False",
         'properties': bdd().getPropertiesDict(),
         'parent': os.path.basename(os.path.abspath(os.path.join(path, os.pardir))),
         'ancestor': [],
         'accepts': [],
         'provides': [],
     }
-    hierarchy['properties']['mtime'] = {'Modified': mdate, 'readonly': True}
-    hierarchy['properties']['ctime'] = {'MetaData modified': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                        'readonly': True}
+    hierarchy['properties']['mtime'] = {"mtime" : "Modified "+ mdate, 'readonly': "True"}
+    hierarchy['properties']['ctime'] = {"ctime": "MetaData modified "+ datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                        'readonly': "True"}
     hierarchy['properties']['btime'] = {
-        'Creation date': datetime.datetime.fromtimestamp(os.path.getctime(path)).strftime(
-            "%Y-%m-%d %H:%M:%S"), 'readonly': True}
+       "btime": "Creation date "+ datetime.fromtimestamp(os.path.getctime(path)).strftime(
+            "%Y-%m-%d %H:%M:%S"), 'readonly': "True"}
     if os.path.isdir(path):
-        hierarchy['properties']['type'] = {'type': 'ContainerNode', 'readonly': True}
+        hierarchy['properties']['type'] = {'type': 'ContainerNode', 'readonly': "True"}
     elif os.path.isfile(path):
-        hierarchy['properties']['type'] = {'type': 'DataNode', 'readonly': True}
+        hierarchy['properties']['type'] = {'type': 'DataNode', 'readonly': "True"}
     hierarchy['size'] = octet(os.path.getsize(path))
     mathusalem = path.split(os.sep)
     list = [".", "VOTest", "VOSpace", "nodes", hierarchy['parent'], hierarchy['node']]
@@ -157,23 +158,24 @@ def populateMeta():
                 'contains': {'date' : 'ivo://ivoa.net/vospace/core#date'}
             }, 'service' : 'vospace'}]
     for items in meta:
-        bdd().insertionMongo(items)
+        bdd().insertDB(items)
     print("VOSpace property list OK")
     print("VOSpace protocol list OK")
     print("VOSpace view list OK")
     print("Service's metadata ready")
 
 def populateFiles():
-        for dir, subdirs, files in os.walk("./VOTest/VOSpace/nodes/" ):
+        for dir, subdirs, files in os.walk(RACINE):
             for x in subdirs:
-                bdd.insertionMongo(bdd(), fsToDict(os.path.join(dir, x)))
+                bdd.insertDB(bdd(), fsToDictionary(os.path.join(dir, x)))
             for y in files:
-                bdd.insertionMongo(bdd(), fsToDict(os.path.join(dir, y)))
+                bdd.insertDB(bdd(), fsToDictionary(os.path.join(dir, y)))
 
  # Startup check up, if the app crashed and the DB is empty, it update it from FS
 def startup():
-    if bdd.connexion(bdd()).find({}).count() == 0:
+    if bdd.connexion(bdd()).find({"service":"vospace"}).count() == 0:
         populateMeta()
+    if bdd.connexion(bdd()).find({"node":{ '$exists' : True }}).count() ==0:
         populateFiles()
         print("Database ready")
     else:

@@ -7,7 +7,7 @@ class Vospace(object):
 
     def findNodes(self, target):
         self.target = target
-        if self.target in Node:
+        if self.target in self.nodes:
             return self.target
 
     def listNodes(self):

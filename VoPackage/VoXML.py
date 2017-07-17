@@ -17,7 +17,7 @@ class Voxml(object):
     RACINE = "./VOTest"
 
 
-    def var_assign(self, node, string, idx):
+    def varAssign(self, node, string, idx):
         global url_fichier, attribut_direction, vu
         index = idx - 1
         if string == "target":
@@ -32,7 +32,7 @@ class Voxml(object):
         global distant
         i = 1
         for index, childs in enumerate(root.iter()):
-            self.var_assign(root, childs.tag[38:], index)
+            self.varAssign(root, childs.tag[38:], index)
             for subchild in childs:
                 if "endpoint" in subchild.tag:
                     self.distant[subchild.tag[38:] + str(i)] = {"destination": subchild.text}
@@ -77,6 +77,7 @@ class Voxml(object):
         XMLNSW3C = 'xmlns:xs'
         W3C_URI = "http://www.w3.org/2001/XMLSchema-instance"
         VOSPACE_URI = "http://www.ivoa.net/xml/VOSpace/v2.1"
+        CORE_uri = "ivo://ivoa.net/vospace/core#"
         URI_V = "uri"
         # Generate GetProtocols, GetViews or GetProperties XML
         if action in ["protocols", "views", "properties"]:
@@ -106,16 +107,7 @@ class Voxml(object):
         # Generate GetNode XML
         elif action is "get":
             if node:
-                # if uri is not None:
-                #     self.uri = os.path.basename(uri)
-                #     cheminNode = self.RACINE+'/VOSpace/nodes/'+node+'/'+self.uri
-                # else:
-                # cheminNode = self.RACINE + '/VOSpace/nodes/' + node
                 temp = node
-                # try:
-                #     temp = vo().getNode(cheminNode)
-                # except Exception:
-                 #   return False
                 top = ET.Element(PREFIX + 'node')
                 top.set(XMLNSVOS, VOSPACE_URI)
                 top.set(XMLNSW3C, W3C_URI)
@@ -123,15 +115,17 @@ class Voxml(object):
                 for k, v in temp['properties']['type'].items():
                     if k != "readonly":
                         top.set("xs:type", PREFIX + v)
+                top.set("Busy", temp['busy'])
                 properties = ET.SubElement(top, PREFIX + 'properties')
                 if temp['properties']:
                     for keys, values in temp['properties'].items():
                         for k, v in values.items():
-                            if keys not in ["ctime", "btime", "mtime", "type"]:
+                            if keys not in ["ctime", "type"]:
                                 if values[k] != '' and k != "readonly":
-                                    prop = ET.SubElement(properties, PREFIX + 'property')
-                                    prop.set(URI_V, v)
-                                    prop.text = k
+                                        prop = ET.SubElement(properties, PREFIX + 'property')
+                                        prop.set(URI_V, CORE_uri+k)
+                                        prop.set("readOnly", values['readonly'])
+                                        prop.text = v
                 else:
                     prop = ET.SubElement(properties, PREFIX + 'property')
                 acceptViews = ET.SubElement(top, PREFIX + 'accept')
@@ -151,11 +145,26 @@ class Voxml(object):
                 else:
                     provide_ = ET.SubElement(provideViews, PREFIX + 'view')
                 capabilities = ET.SubElement(top, PREFIX + 'capabilities')
-                noeuds = ET.SubElement(top, PREFIX + 'nodes')
-                for keys, values in temp['endpoints'].items():
-                    noeud = ET.SubElement(noeuds, PREFIX + 'node')
-                    noeud.set(URI_V, keys)
-                    noeud.set("xs:type", values)
+
+                children = ET.SubElement(top, PREFIX + 'nodes')
+                for childrens in temp['children']:
+                    child = ET.SubElement(children, PREFIX + 'node')
+                    child.set(URI_V, childrens['path'][1:])
+                    child.set("xs:type", childrens['properties']['type']['type'])
+                    child.set("Busy", childrens['busy'])
+
+                    childrenProperties = ET.SubElement(child, PREFIX + 'properties')
+                    if childrens['properties']:
+                        for keys, values in childrens['properties'].items():
+                            for k, v in values.items():
+                                if keys not in ["ctime", "type"]:
+                                    if values[k] != '' and k != "readonly":
+                                            chilProp = ET.SubElement(childrenProperties, PREFIX + 'property')
+                                            chilProp.set(URI_V, CORE_uri+k)
+                                            chilProp.set("readOnly", values['readonly'])
+                                            chilProp.text = v
+                    else:
+                        chilProp = ET.SubElement(properties, PREFIX + 'property')
                 return self.xml_formateur(top)
 
 

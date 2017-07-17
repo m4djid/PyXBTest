@@ -9,7 +9,9 @@ import json
 import errno
 import uuid
 import datetime
+from pprint import pprint
 #from dicttoxml import dicttoxml
+import untangle
 import time
 start_time = time.time()
 
@@ -47,7 +49,7 @@ print("==========================Etape 1=============================")
 print("Impression du nom de la balise root")
 print("")
 
-print(root.tag[38:])
+print(root.tag)
 
 
 print("")
@@ -55,50 +57,123 @@ print("==========================Etape 2=============================")
 print("Impression des tags du XML")
 print("")
 
-def text(node, string, idx):
-    index = idx - 1
-    if string == "target":
-        print(string, "==>",node[index].text)
-        global url_fichier
-        url_fichier = node[index].text
-    elif string == "direction":
-        print(string, "==>", node[index].text)
-        global attribut_direction
-        attribut_direction = node[index].text
-    elif string == "view":
-        print(string, "==>", node[index].attrib)
-        global vu
-        vu = node[index].attrib
-    else:
-        print(string)
+# def text(node, string, idx):
+#     index = idx - 1
+#     if string == "target":
+#         print(string, "==>",node[index].text)
+#         global url_fichier
+#         url_fichier = node[index].text
+#     elif string == "direction":
+#         print(string, "==>", node[index].text)
+#         global attribut_direction
+#         attribut_direction = node[index].text
+#     elif string == "view":
+#         print(string, "==>", node[index].attrib)
+#         global vu
+#         vu = node[index].attrib
+#     else:
+#         print(string)
+#
+# def print_tag(root):
+#     for idx, childs in enumerate(root.iter()):
+#         text(root,childs.tag[38:],idx)
+#
+#
+# print_tag(root)
+# print(attribut_security)
 
-def print_tag(root):
-    for idx, childs in enumerate(root.iter()):
-        text(root,childs.tag[38:],idx)
-
-
-print_tag(root)
-print(attribut_security)
 
 print("")
 print("==========================Etape 3=============================")
 print("Impression des tags et attributs")
 print("")
 
-def attr(root):
-    retour = {}
-    for childs in root.iter():
-        if len(childs.attrib) != 0 and len(childs.tag) != 0:
-            tag = childs.tag[38:]
-            att = childs.attrib
-            retour = {tag: att}
-            # print(str(tag) + " " + str(att))
-            return retour
+# def attr(root):
+#     retour = {}
+#     for childs in root.iter():
+#         if len(childs.attrib) != 0 and len(childs.tag) != 0:
+#             tag = childs.tag[38:]
+#             att = childs.attrib
+#             retour = {tag: att}
+#             # print(str(tag) + " " + str(att))
+#             return retour
+#
+#
+#
+#
+# print(attr(root))
+r = root.iter()
+xml = {
+    "accepts" : [],
+    "provides" : [],
+    "capabilities" : [],
+    }
+
+def simplifier(tag, char):
+    return tag[tag.rfind(char):][1:]
+print(root.attrib)
+
+for k,v in root.attrib.items():
+    if "type" in k:
+        xml['properties'] = {'type': [v[v.rfind(":"):][1:], "True"]}
+    elif k == "uri":
+        parent, cible = os.path.split(v[v.rfind("!"):][1:])
+        xml['cible'] = cible
+        xml['parent'] = os.path.basename(parent)
+
+for childrens in root:
+    if "properties" in childrens.tag:
+        ind = ''
+        for subchildrens in childrens:
+            for k,v in subchildrens.items():
+                if k == "uri":
+                    ind =  v[v.rfind("#"):][1:]
+                    xml['properties'][ind] = [subchildrens.text]
+                else:
+                    xml['properties'][ind].append(v)
+    elif "accepts" in childrens.tag:
+        for subchildrens in childrens:
+            for k,v in subchildrens.items():
+                xml['accepts'].append(v)
+    elif "provides" in childrens.tag:
+        for subchildrens in childrens:
+            for k,v in subchildrens.items():
+                xml['provides'].append(v)
+    elif "target" in childrens.tag:
+        xml['target'] = childrens.text
+    elif "direction" in childrens.tag:
+        xml['direction'] = childrens.text
+    elif "protocol" in childrens.tag:
+        xml['protocol'] = childrens.attrib
 
 
 
 
-print(attr(root))
+
+print("*"*50)
+print("xml parsé :")
+pprint(xml)
+
+print("*"*50)
+
+n = root.iter("{http://www.ivoa.net/xml/VOSpace/v2.1}node")
+for i in n:
+    for k,v in i.items():
+        if "type" in k:
+            print(k[k.rfind("}"):][1:], v)
+        elif "uri" in k:
+            print(k, v[v.rfind("!"):][1:])
+        else:
+            print(k,v)
+
+
+print("*"*50)
+acc = root.find("{http://www.ivoa.net/xml/VOSpace/v2.1}properties")
+if acc:
+    for items in acc.iter("{http://www.ivoa.net/xml/VOSpace/v2.1}property"):
+        for k,v in items.items():
+            print(k,v)
+
 
 
 print("")
@@ -106,18 +181,50 @@ print("==========================Etape 4=============================")
 print("")
 
 def protocol_parser(root):
-    tableau = []
+    tableau = {'node': '',
+               'path': '',
+               'properties': {},
+               'accepts': [],
+               'provides': []}
+    index = ''
     for childs in root.iter():
-        x = childs.tag
+        x = childs.tag[childs.tag.rfind("}"):][1:]
         y = childs.attrib
         z = childs.text
-        print(x[38:],y, z)
-        tableau.append(childs.attrib) if len(childs.attrib) > 0 else None
+        if x == "node":
+            for k,v in y.items():
+                if k == "uri":
+                    tableau['node'] = os.path.basename(v)
+                    tableau['path'] = v[v.rfind("!"):][1:]
+                elif "type" in k:
+                    tableau['properties']['type'] = {"type" :v[4:], "readOnly": "True"}
+        elif x == "property":
+            for k, v in y.items():
+                    if "ivo://ivoa.net/vospace/core#" in y[k]:
+                        tableau['properties'][v[v.rfind("#"):][1:]]= {v[v.rfind("#"):][1:] :z, "readOnly": y['readOnly']}
+        elif x == "accepts":
+            for k,v in y.items():
+                tableau['accepts'].append(v)
+        elif x == "provides":
+            for k,v in y.items():
+                tableau['provides'].append(v)
+
+
+        print("x : ", x)
+
+        print("y : ",y)
+        print("z : ", z)
+    print("*******************")
+    for i in root.iter(""):
+        print(i.attrib)
+    print("$$$$$$$$$$$$$$$$$$$$")
+
+
 
             # print("ajout d'un attribut non vide")
             # print(" ")
     # print("Impression du tableau des attributs")
-    print(tableau)
+    pprint(tableau)
     return tableau
 retour = protocol_parser(root)
 
@@ -143,9 +250,11 @@ def protocol_checker(tableau):
            print("DELETE")
            requete = 'ivo://ivoa.net/vospace/core#httpdelete'
     return requete
-
-check = protocol_checker(retour)
-print('protocol :',check)
+try:
+    check = protocol_checker(retour)
+    print('protocol :',check)
+except Exception as e:
+    print(e)
 
 print("")
 print("==========================Etape 6=============================")
